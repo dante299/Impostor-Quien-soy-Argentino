@@ -4,83 +4,80 @@
 <meta charset="UTF-8">
 <title>Impostor versión Argentina</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body {
-  margin: 0;
+  margin:0;
   font-family: Arial, Helvetica, sans-serif;
-  background: #000;
-  color: #ccc;
+  background:#000;
+  color:#ccc;
 }
-
-.screen { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; text-align: center; }
-.screen.active { display: block; }
-
-h1 { margin: 30px 0; color: #bbb; }
-
+.screen { display:none; min-height:100vh; padding:20px; box-sizing:border-box; text-align:center; }
+.screen.active { display:block; }
+h1 { margin:30px 0; color:#bbb; text-align:center; }
 .main-btn {
-  background: linear-gradient(135deg, #ff2a2a, #b80000);
-  color: #000;
-  font-size: 36px;
-  font-weight: bold;
-  padding: 35px 50px;
-  border-radius: 30px;
-  cursor: pointer;
-  display: inline-block;
+  background: linear-gradient(135deg,#ff2a2a,#b80000);
+  color:#000;
+  font-size:36px;
+  font-weight:bold;
+  padding:35px 50px;
+  border-radius:30px;
+  cursor:pointer;
+  display:inline-block;
 }
-
-.box {
-  background: #111;
-  padding: 20px;
-  border-radius: 15px;
-  margin: 15px auto;
-  max-width: 420px;
-}
-
-select, input, button { width: 100%; padding: 12px; margin-top: 10px; font-size: 16px; border-radius: 8px; border: none; }
-button { background: #ff2a2a; color: #000; font-weight: bold; cursor: pointer; }
+.box { background:#111; padding:20px; border-radius:15px; margin:15px auto; max-width:420px; }
+select,input,button { width:100%; padding:12px; margin-top:10px; font-size:16px; border-radius:8px; border:none; }
+button { background:#ff2a2a; color:#000; font-weight:bold; cursor:pointer; }
 
 /* interruptor real */
-.switch { position: relative; width: 50px; height: 26px; }
+.switch { position:relative; width:50px; height:26px; }
 .switch input { display:none; }
-.slider { position: absolute; inset: 0; background: #555; border-radius: 20px; cursor: pointer; }
-.slider:before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .3s; }
-input:checked + .slider { background: #ff2a2a; }
-input:checked + .slider:before { transform: translateX(24px); }
+.slider { position:absolute; inset:0; background:#555; border-radius:20px; cursor:pointer; }
+.slider:before { content:""; position:absolute; height:20px; width:20px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.3s; }
+input:checked + .slider { background:#ff2a2a; }
+input:checked + .slider:before { transform:translateX(24px); }
 
-.toggle-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+.toggle-row { display:flex; justify-content:space-between; align-items:center; margin-top:15px; }
 
 /* revelar */
 .reveal-box {
-  background: #000;
-  border: 2px solid #333;
-  border-radius: 20px;
-  height: 180px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  font-size: 28px;
-  margin-top: 30px;
-  user-select: none;
-  overflow: hidden;
-  position: relative;
+  background:#000;
+  border:2px solid #333;
+  border-radius:20px;
+  height:180px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  font-size:28px;
+  margin-top:30px;
+  user-select:none;
+  overflow:hidden;
+  position:relative;
+}
+.tapa {
+  background:#ff2a2a;
+  color:#000;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:20px;
+  cursor:pointer;
+  font-weight:bold;
 }
 .word-inner {
-  position: absolute;
-  bottom: -180px;
-  width: 100%;
-  transition: bottom 0.5s ease;
+  position:absolute;
+  bottom:0;
+  width:100%;
 }
-.word-inner.visible { bottom: 0; }
-
-.impostor { color: red; font-size: 34px; font-weight: bold; }
-.small { font-size: 18px; margin-top: 10px; color: #aaa; }
-
-.vote-btn { background: #222; color: #fff; margin-top: 8px; }
-
+.impostor { color:red; font-size:34px; font-weight:bold; }
+.small { font-size:18px; margin-top:10px; color:#aaa; }
+.vote-btn { background:#222; color:#fff; margin-top:8px; }
 </style>
 </head>
-
 <body>
 
 <!-- HOME -->
@@ -92,42 +89,26 @@ input:checked + .slider:before { transform: translateX(24px); }
 <!-- CONFIG -->
 <div id="config" class="screen">
   <h1>Configurar partida</h1>
-
   <div class="box">
     <label>Cantidad de jugadores</label>
     <select id="playersCount" onchange="updatePlayers()">
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">11</option>
-      <option value="12">12</option>
+      <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+      <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+      <option value="9">9</option><option value="10">10</option>
+      <option value="11">11</option><option value="12">12</option>
     </select>
-
     <div id="playerInputs"></div>
-
     <label>Cantidad de impostores</label>
     <select id="impostorsCount">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
+      <option value="1">1</option><option value="2">2</option><option value="3">3</option>
     </select>
-
     <label>Tiempo de debate</label>
     <select id="timeCount">
-      <option value="1">1 minuto</option>
-      <option value="2">2 minutos</option>
-      <option value="3">3 minutos</option>
-      <option value="4">4 minutos</option>
-      <option value="5">5 minutos</option>
-      <option value="6">6 minutos</option>
+      <option value="1">1 minuto</option><option value="2">2 minutos</option>
+      <option value="3">3 minutos</option><option value="4">4 minutos</option>
+      <option value="5">5 minutos</option><option value="6">6 minutos</option>
       <option value="7">7 minutos</option>
     </select>
-
     <div class="toggle-row">
       <span>Pista</span>
       <label class="switch">
@@ -135,7 +116,6 @@ input:checked + .slider:before { transform: translateX(24px); }
         <span class="slider"></span>
       </label>
     </div>
-
     <button onclick="startGame()">Nueva partida</button>
   </div>
 </div>
@@ -143,11 +123,10 @@ input:checked + .slider:before { transform: translateX(24px); }
 <!-- REVELAR -->
 <div id="reveal" class="screen">
   <h1 id="playerName"></h1>
-
   <div class="reveal-box" id="revealBox">
-    <div class="word-inner" id="wordInner">DESLIZÁ / TOCÁ PARA VER</div>
+    <div class="tapa" id="tapa">DESLIZAR</div>
+    <div class="word-inner" id="wordInner"></div>
   </div>
-
   <button id="nextBtn" onclick="nextPlayer()" style="display:none;">Siguiente jugador</button>
 </div>
 
@@ -164,118 +143,106 @@ const palabra = "ASADO";
 const categoria = "COMIDA";
 const pista = "DOMINGO";
 
-let players = [];
-let impostors = [];
-let current = 0;
-let timeLeft;
-let timerInterval;
+let players=[], impostors=[], current=0, timeLeft, timerInterval;
 
 // --- HOME & CONFIG ---
-function show(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
-
-function updatePlayers() {
-  const count = playersCount.value;
-  playerInputs.innerHTML = "";
-  for (let i = 1; i <= count; i++) {
-    const input = document.createElement("input");
-    input.placeholder = "Jugador " + i;
+function updatePlayers(){
+  const count=playersCount.value;
+  playerInputs.innerHTML="";
+  for(let i=1;i<=count;i++){
+    const input=document.createElement("input");
+    input.placeholder="Jugador "+i;
     playerInputs.appendChild(input);
   }
 }
 
 // --- START GAME ---
-function startGame() {
-  players = [...playerInputs.querySelectorAll("input")].map((i, idx) => i.value || "Jugador " + (idx+1));
-
-  impostors = [];
-  while (impostors.length < impostorsCount.value) {
-    const r = Math.floor(Math.random() * players.length);
-    if (!impostors.includes(r)) impostors.push(r);
+function startGame(){
+  players=[...playerInputs.querySelectorAll("input")].map((i,idx)=>i.value||"Jugador "+(idx+1));
+  impostors=[];
+  while(impostors.length<impostorsCount.value){
+    const r=Math.floor(Math.random()*players.length);
+    if(!impostors.includes(r)) impostors.push(r);
   }
-
-  current = 0;
+  current=0;
   showReveal();
 }
 
 // --- REVEAL ---
-const revealBox = document.getElementById("revealBox");
-const wordInner = document.getElementById("wordInner");
-const nextBtn = document.getElementById("nextBtn");
+const revealBox=document.getElementById("revealBox");
+const wordInner=document.getElementById("wordInner");
+const tapa=document.getElementById("tapa");
+const nextBtn=document.getElementById("nextBtn");
+let startY=0, currentY=0, isDragging=false;
 
-let startY = 0;
-let currentY = 0;
-let isDragging = false;
-
-revealBox.addEventListener("touchstart", e => {
-  isDragging = true;
-  startY = e.touches[0].clientY;
+tapa.addEventListener("touchstart",e=>{isDragging=true; startY=e.touches[0].clientY;});
+tapa.addEventListener("touchmove",e=>{
+  if(!isDragging)return;
+  currentY=e.touches[0].clientY;
+  let diff=startY-currentY;
+  if(diff>0) tapa.style.transform=`translateY(${-Math.min(diff,180)}px)`;
 });
-revealBox.addEventListener("touchmove", e => {
-  if (!isDragging) return;
-  currentY = e.touches[0].clientY;
-  let diff = startY - currentY;
-  if(diff > 0) {
-    wordInner.style.bottom = Math.min(diff-180, 0) + "px";
-  }
-});
-revealBox.addEventListener("touchend", e => {
-  isDragging = false;
-  wordInner.style.bottom = "0px";
+tapa.addEventListener("touchend",e=>{
+  isDragging=false;
+  tapa.style.transform="translateY(-180px)";
+  revealWord();
 });
 
-function showReveal() {
+function showReveal(){
   show("reveal");
-  playerName.innerText = players[current];
-  nextBtn.style.display = "none";
+  playerName.innerText=players[current];
+  tapa.style.transform="translateY(0)";
+  tapa.style.display="flex";
+  wordInner.innerHTML="";
+  nextBtn.style.display="none";
+}
 
-  if (impostors.includes(current)) {
-    wordInner.innerHTML = `<div class="impostor">¡IMPOSTOR!</div><div class="small">${clueToggle.checked ? `(${pista})` : categoria}</div>`;
+function revealWord(){
+  tapa.style.display="none";
+  if(impostors.includes(current)){
+    wordInner.innerHTML=`<div class="impostor">¡IMPOSTOR!</div><div class="small">${clueToggle.checked?`(${pista})`:categoria}</div>`;
   } else {
-    wordInner.innerText = palabra;
+    wordInner.innerText=palabra;
   }
-
-  setTimeout(() => { nextBtn.style.display = "block"; }, 500);
+  setTimeout(()=>{ nextBtn.style.display="block"; },200);
 }
 
 // --- NEXT PLAYER ---
-function nextPlayer() {
+function nextPlayer(){
   current++;
-  if (current < players.length) {
-    showReveal();
-  } else {
-    startDebate();
-  }
+  if(current<players.length) showReveal();
+  else startDebate();
 }
 
 // --- DEBATE ---
-function startDebate() {
+function startDebate(){
   show("debate");
-  votes.innerHTML = "";
-  players.forEach(p => {
-    const b = document.createElement("button");
-    b.className = "vote-btn";
-    b.innerText = p;
+  votes.innerHTML="";
+  players.forEach(p=>{
+    const b=document.createElement("button");
+    b.className="vote-btn";
+    b.innerText=p;
     votes.appendChild(b);
   });
-
-  timeLeft = parseInt(timeCount.value) * 60;
+  // cronómetro
+  timeLeft=parseInt(timeCount.value)*60;
   updateTimer();
-  timerInterval = setInterval(() => {
+  timerInterval=setInterval(()=>{
     timeLeft--;
     updateTimer();
-    if (timeLeft <= 0) clearInterval(timerInterval);
-  }, 1000);
+    if(timeLeft<=0) clearInterval(timerInterval);
+  },1000);
 }
 
-function updateTimer() {
-  const m = Math.floor(timeLeft / 60);
-  const s = timeLeft % 60;
-  timer.innerText = `${m}:${s.toString().padStart(2,"0")}`;
+function updateTimer(){
+  const m=Math.floor(timeLeft/60);
+  const s=timeLeft%60;
+  timer.innerText=`${m}:${s.toString().padStart(2,"0")}`;
 }
 </script>
-
 </body>
-</html>
+                                    </html>
