@@ -2,231 +2,192 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Impostor Argentina</title>
+  <title>Impostor versión Argentina</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
     body {
       margin: 0;
-      background: black;
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #000;
+      color: #ddd;
     }
 
     .screen {
       display: none;
-      width: 100%;
-      max-width: 420px;
+      min-height: 100vh;
       padding: 20px;
+      box-sizing: border-box;
       text-align: center;
     }
 
-    .active {
+    .screen.active {
       display: block;
     }
 
     h1 {
-      color: #bfbfbf;
+      margin-top: 40px;
       margin-bottom: 40px;
+      font-size: 32px;
+      color: #bbb;
     }
 
-    /* BOTÓN IMPOSTOR */
     .main-btn {
-      background: linear-gradient(135deg, #ff2a2a, #c40000);
-      color: black;
-      font-size: 34px;
-      font-weight: 700;
-      padding: 35px 20px;
+      background: linear-gradient(135deg, #ff2a2a, #b80000);
+      color: #000;
+      font-size: 36px;
+      font-weight: bold;
+      padding: 30px 40px;
       border-radius: 25px;
+      display: inline-block;
       cursor: pointer;
       user-select: none;
     }
 
-    .option {
-      margin-bottom: 18px;
-      text-align: left;
+    .box {
+      background: #111;
+      padding: 20px;
+      border-radius: 15px;
+      margin: 15px auto;
+      max-width: 400px;
     }
 
-    select {
+    select, button, input {
       width: 100%;
       padding: 12px;
-      border-radius: 10px;
-      border: none;
+      margin-top: 10px;
       font-size: 16px;
-    }
-
-    /* SWITCH */
-    .switch {
-      position: relative;
-      width: 55px;
-      height: 30px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      background-color: #777;
-      border-radius: 30px;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      transition: .3s;
-    }
-
-    .slider:before {
-      content: "";
-      position: absolute;
-      height: 22px;
-      width: 22px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      border-radius: 50%;
-      transition: .3s;
-    }
-
-    input:checked + .slider {
-      background-color: #ff2a2a;
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(25px);
-    }
-
-    .new-game {
-      background: #ff2a2a;
-      color: black;
+      border-radius: 8px;
       border: none;
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: 600;
+    }
+
+    button {
+      background: #ff2a2a;
+      color: #000;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    /* REVELAR */
     .reveal-box {
-      background: black;
+      background: #000;
       border: 2px solid #333;
       border-radius: 20px;
-      padding: 60px 20px;
-      font-size: 28px;
+      padding: 40px;
       margin-top: 40px;
-      color: #bfbfbf;
+      font-size: 28px;
+      color: #ccc;
     }
 
-    .next-btn {
-      margin-top: 30px;
-      background: #ff2a2a;
-      color: black;
-      border: none;
-      padding: 14px;
-      width: 100%;
-      border-radius: 12px;
+    .impostor {
+      color: red;
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    .small {
       font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
+      margin-top: 10px;
+      color: #aaa;
+    }
+
+    .toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
     }
   </style>
 </head>
+
 <body>
 
-  <!-- PANTALLA INICIO -->
-  <div id="home" class="screen active">
-    <h1>Impostor · Versión Argentina</h1>
-    <div class="main-btn" onclick="goConfig()">IMPOSTOR</div>
+<!-- PANTALLA INICIO -->
+<div id="home" class="screen active">
+  <h1>Impostor versión Argentina</h1>
+  <div class="main-btn" onclick="goConfig()">IMPOSTOR</div>
+</div>
+
+<!-- CONFIGURACIÓN -->
+<div id="config" class="screen">
+  <h1>Configurar partida</h1>
+
+  <div class="box">
+    <label>Cantidad de jugadores</label>
+    <select id="playersCount">
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+    </select>
+
+    <label>Cantidad de impostores</label>
+    <select id="impostorsCount">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+
+    <label>Tiempo de debate</label>
+    <select id="timeCount">
+      <option>1 minuto</option>
+      <option>2 minutos</option>
+      <option>3 minutos</option>
+      <option>4 minutos</option>
+      <option>5 minutos</option>
+      <option>6 minutos</option>
+      <option>7 minutos</option>
+    </select>
+
+    <div class="toggle">
+      <span>Pista activada</span>
+      <input type="checkbox" id="clueToggle">
+    </div>
+
+    <button onclick="startGame()">Nueva partida</button>
   </div>
+</div>
 
-  <!-- CONFIGURACIÓN -->
-  <div id="config" class="screen">
-    <h1>Configuración</h1>
+<!-- REVELAR -->
+<div id="reveal" class="screen">
+  <h1 id="playerName"></h1>
 
-    <div class="option">
-      Jugadores
-      <select id="playerCount" onchange="updatePlayers()">
-        <option>3</option><option>4</option><option>5</option>
-        <option>6</option><option>7</option><option>8</option>
-        <option>9</option><option>10</option><option>11</option><option>12</option>
-      </select>
-    </div>
+  <div class="reveal-box" id="word"></div>
 
-    <div class="option">
-      Impostores
-      <select id="impostorsCount">
-        <option>1</option><option>2</option><option>3</option>
-      </select>
-    </div>
-
-    <div class="option">
-      Tiempo de debate
-      <select id="time">
-        <option>1 minuto</option><option>2 minutos</option><option>3 minutos</option>
-        <option>4 minutos</option><option>5 minutos</option>
-        <option>6 minutos</option><option>7 minutos</option>
-      </select>
-    </div>
-
-    <div class="option">
-      Pista
-      <label class="switch">
-        <input type="checkbox" id="clueToggle">
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <button class="new-game" onclick="startGame()">Nueva partida</button>
-  </div>
-
-  <!-- REVELAR -->
-  <div id="reveal" class="screen">
-    <h1 id="playerName"></h1>
-    <div class="reveal-box" id="word"></div>
-    <button class="next-btn" onclick="next()">Siguiente jugador</button>
-  </div>
+  <button onclick="nextPlayer()">Siguiente jugador</button>
+</div>
 
 <script>
   const palabra = "ASADO";
   const categoria = "COMIDA";
-  const pista = "Se come los domingos";
+  const pista = "DOMINGO";
 
   let players = [];
   let impostors = [];
   let current = 0;
 
   function show(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
   }
 
   function goConfig() {
-    show('config');
+    show("config");
   }
 
   function startGame() {
-    const total = parseInt(playersCount.value);
-    const impCount = parseInt(impostorsCount.value);
+    const total = parseInt(document.getElementById("playersCount").value);
+    const impCount = parseInt(document.getElementById("impostorsCount").value);
 
     players = [];
-    for (let i = 1; i <= total; i++) players.push("Jugador " + i);
+    for (let i = 1; i <= total; i++) {
+      players.push("Jugador " + i);
+    }
 
     impostors = [];
     while (impostors.length < impCount) {
@@ -239,50 +200,32 @@
   }
 
   function reveal() {
-  show('reveal');
-  playerName.innerText = players[current];
+    show("reveal");
+    document.getElementById("playerName").innerText = players[current];
 
-  const pistaOn = clueToggle.checked;
+    const pistaOn = document.getElementById("clueToggle").checked;
+    const wordBox = document.getElementById("word");
 
-  if (impostors.includes(current)) {
-    let extra = pistaOn ? pista : categoria;
-
-    word.innerHTML = `
-      <div style="color:red; font-size:32px; font-weight:bold;">
-        ¡IMPOSTOR!
-      </div>
-      <div style="color:#ccc; font-size:18px; margin-top:10px;">
-        ${extra}
-      </div>
-    `;
-  } else {
-    word.innerText = palabra;
-  }
-  }
+    if (impostors.includes(current)) {
+      wordBox.innerHTML = `
+        <div class="impostor">¡IMPOSTOR!</div>
+        <div class="small">${pistaOn ? pista : categoria}</div>
+      `;
+    } else {
+      wordBox.innerText = palabra;
+    }
   }
 
-  function next() {
+  function nextPlayer() {
     current++;
     if (current < players.length) {
       reveal();
     } else {
-      alert("Todos vieron su rol. Debate!");
-      show('home');
+      alert("Todos vieron su rol. Empieza el debate.");
+      show("home");
     }
-  }
-  function updatePlayers() {
-  const count = document.getElementById("playerCount").value;
-  const container = document.getElementById("playerInputs");
-
-  container.innerHTML = "";
-
-  for (let i = 1; i <= count; i++) {
-    const input = document.createElement("input");
-    input.placeholder = "Jugador " + i;
-    container.appendChild(input);
-  }
   }
 </script>
 
 </body>
-</html>
+                                                 </html>
