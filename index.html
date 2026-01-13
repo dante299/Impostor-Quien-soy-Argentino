@@ -13,20 +13,10 @@ body {
   color: #ccc;
 }
 
-.screen {
-  display: none;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
+.screen { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; text-align: center; }
 .screen.active { display: block; }
 
-h1 {
-  margin: 30px 0;
-  color: #bbb;
-}
+h1 { margin: 30px 0; color: #bbb; }
 
 .main-btn {
   background: linear-gradient(135deg, #ff2a2a, #b80000);
@@ -47,60 +37,18 @@ h1 {
   max-width: 420px;
 }
 
-select, input, button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-}
-
-button {
-  background: #ff2a2a;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-}
+select, input, button { width: 100%; padding: 12px; margin-top: 10px; font-size: 16px; border-radius: 8px; border: none; }
+button { background: #ff2a2a; color: #000; font-weight: bold; cursor: pointer; }
 
 /* interruptor real */
-.switch {
-  position: relative;
-  width: 50px;
-  height: 26px;
-}
+.switch { position: relative; width: 50px; height: 26px; }
 .switch input { display:none; }
-.slider {
-  position: absolute;
-  inset: 0;
-  background: #555;
-  border-radius: 20px;
-  cursor: pointer;
-}
-.slider:before {
-  content: "";
-  position: absolute;
-  height: 20px;
-  width: 20px;
-  left: 3px;
-  bottom: 3px;
-  background: #fff;
-  border-radius: 50%;
-  transition: .3s;
-}
-input:checked + .slider {
-  background: #ff2a2a;
-}
-input:checked + .slider:before {
-  transform: translateX(24px);
-}
+.slider { position: absolute; inset: 0; background: #555; border-radius: 20px; cursor: pointer; }
+.slider:before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .3s; }
+input:checked + .slider { background: #ff2a2a; }
+input:checked + .slider:before { transform: translateX(24px); }
 
-.toggle-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 15px;
-}
+.toggle-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
 
 /* revelar */
 .reveal-box {
@@ -109,34 +57,27 @@ input:checked + .slider:before {
   border-radius: 20px;
   height: 180px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   font-size: 28px;
   margin-top: 30px;
   user-select: none;
+  overflow: hidden;
+  position: relative;
 }
+.word-inner {
+  position: absolute;
+  bottom: -180px;
+  width: 100%;
+  transition: bottom 0.5s ease;
+}
+.word-inner.visible { bottom: 0; }
 
-.hidden {
-  color: #444;
-}
+.impostor { color: red; font-size: 34px; font-weight: bold; }
+.small { font-size: 18px; margin-top: 10px; color: #aaa; }
 
-.impostor {
-  color: red;
-  font-size: 34px;
-  font-weight: bold;
-}
+.vote-btn { background: #222; color: #fff; margin-top: 8px; }
 
-.small {
-  font-size: 18px;
-  margin-top: 10px;
-  color: #aaa;
-}
-
-.vote-btn {
-  background: #222;
-  color: #fff;
-  margin-top: 8px;
-}
 </style>
 </head>
 
@@ -203,11 +144,11 @@ input:checked + .slider:before {
 <div id="reveal" class="screen">
   <h1 id="playerName"></h1>
 
-  <div class="reveal-box hidden" id="revealBox" onclick="revealWord()">
-    DESLIZÁ / TOCÁ PARA VER
+  <div class="reveal-box" id="revealBox">
+    <div class="word-inner" id="wordInner">DESLIZÁ / TOCÁ PARA VER</div>
   </div>
 
-  <button onclick="nextPlayer()">Siguiente jugador</button>
+  <button id="nextBtn" onclick="nextPlayer()" style="display:none;">Siguiente jugador</button>
 </div>
 
 <!-- DEBATE -->
@@ -229,6 +170,7 @@ let current = 0;
 let timeLeft;
 let timerInterval;
 
+// --- HOME & CONFIG ---
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -244,6 +186,7 @@ function updatePlayers() {
   }
 }
 
+// --- START GAME ---
 function startGame() {
   players = [...playerInputs.querySelectorAll("input")].map((i, idx) => i.value || "Jugador " + (idx+1));
 
@@ -257,26 +200,47 @@ function startGame() {
   showReveal();
 }
 
+// --- REVEAL ---
+const revealBox = document.getElementById("revealBox");
+const wordInner = document.getElementById("wordInner");
+const nextBtn = document.getElementById("nextBtn");
+
+let startY = 0;
+let currentY = 0;
+let isDragging = false;
+
+revealBox.addEventListener("touchstart", e => {
+  isDragging = true;
+  startY = e.touches[0].clientY;
+});
+revealBox.addEventListener("touchmove", e => {
+  if (!isDragging) return;
+  currentY = e.touches[0].clientY;
+  let diff = startY - currentY;
+  if(diff > 0) {
+    wordInner.style.bottom = Math.min(diff-180, 0) + "px";
+  }
+});
+revealBox.addEventListener("touchend", e => {
+  isDragging = false;
+  wordInner.style.bottom = "0px";
+});
+
 function showReveal() {
   show("reveal");
   playerName.innerText = players[current];
-  revealBox.innerText = "DESLIZÁ / TOCÁ PARA VER";
-  revealBox.classList.add("hidden");
-}
-
-function revealWord() {
-  revealBox.classList.remove("hidden");
+  nextBtn.style.display = "none";
 
   if (impostors.includes(current)) {
-    revealBox.innerHTML = `
-      <div class="impostor">¡IMPOSTOR!</div>
-      <div class="small">(${clueToggle.checked ? pista : categoria})</div>
-    `;
+    wordInner.innerHTML = `<div class="impostor">¡IMPOSTOR!</div><div class="small">${clueToggle.checked ? `(${pista})` : categoria}</div>`;
   } else {
-    revealBox.innerText = palabra;
+    wordInner.innerText = palabra;
   }
+
+  setTimeout(() => { nextBtn.style.display = "block"; }, 500);
 }
 
+// --- NEXT PLAYER ---
 function nextPlayer() {
   current++;
   if (current < players.length) {
@@ -286,6 +250,7 @@ function nextPlayer() {
   }
 }
 
+// --- DEBATE ---
 function startDebate() {
   show("debate");
   votes.innerHTML = "";
@@ -296,7 +261,7 @@ function startDebate() {
     votes.appendChild(b);
   });
 
-  timeLeft = timeCount.value * 60;
+  timeLeft = parseInt(timeCount.value) * 60;
   updateTimer();
   timerInterval = setInterval(() => {
     timeLeft--;
