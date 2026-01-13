@@ -162,7 +162,7 @@
 
     <div class="option">
       Jugadores
-      <select id="playersCount">
+      <select id="playerCount" onchange="updatePlayers()">
         <option>3</option><option>4</option><option>5</option>
         <option>6</option><option>7</option><option>8</option>
         <option>9</option><option>10</option><option>11</option><option>12</option>
@@ -239,20 +239,26 @@
   }
 
   function reveal() {
-    show('reveal');
-    playerName.innerText = players[current];
+  show('reveal');
+  playerName.innerText = players[current];
 
-    const pistaOn = clueToggle.checked;
+  const pistaOn = clueToggle.checked;
 
-    if (impostors.includes(current)) {
-      if (pistaOn) {
-        word.innerText = "Pista: " + pista;
-      } else {
-        word.innerText = "Categoría: " + categoria;
-      }
-    } else {
-      word.innerText = palabra;
-    }
+  if (impostors.includes(current)) {
+    let extra = pistaOn ? pista : categoria;
+
+    word.innerHTML = `
+      <div style="color:red; font-size:32px; font-weight:bold;">
+        ¡IMPOSTOR!
+      </div>
+      <div style="color:#ccc; font-size:18px; margin-top:10px;">
+        ${extra}
+      </div>
+    `;
+  } else {
+    word.innerText = palabra;
+  }
+  }
   }
 
   function next() {
@@ -263,6 +269,18 @@
       alert("Todos vieron su rol. Debate!");
       show('home');
     }
+  }
+  function updatePlayers() {
+  const count = document.getElementById("playerCount").value;
+  const container = document.getElementById("playerInputs");
+
+  container.innerHTML = "";
+
+  for (let i = 1; i <= count; i++) {
+    const input = document.createElement("input");
+    input.placeholder = "Jugador " + i;
+    container.appendChild(input);
+  }
   }
 </script>
 
