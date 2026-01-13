@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Impostor – Jugadores</title>
+<title>Impostor – Juego Argentino</title>
 
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -21,7 +21,122 @@
     margin-bottom: 20px;
   }
 
-  /* Cuadro jugador */
+  /* Pantalla inicio */
+  #start-button {
+    background: linear-gradient(135deg, #ff4d4d, #cc0000);
+    color: black;
+    font-size: 42px;
+    font-weight: 600;
+    width: 300px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px auto;
+    border-radius: 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  #start-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  }
+
+  /* Configuración */
+  #config {
+    display: none;
+    margin-top: 20px;
+    text-align: left;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  label {
+    display: block;
+    margin: 15px 0 5px;
+    font-size: 16px;
+  }
+
+  select, input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 10px;
+  }
+
+  .switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* Interruptor animado */
+  .switch input {
+    position: relative;
+    width: 50px;
+    height: 25px;
+    -webkit-appearance: none;
+    background: #ccc;
+    outline: none;
+    border-radius: 25px;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  .switch input:checked {
+    background: #4caf50;
+  }
+
+  .switch input::before {
+    content: '';
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+    background: white;
+    transition: 0.3s;
+  }
+
+  .switch input:checked::before {
+    transform: translateX(25px);
+  }
+
+  .player-grid {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .player-grid input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    color: black;
+  }
+
+  button {
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    background: red;
+    color: white;
+  }
+
+  /* Pantalla jugador */
+  #player-screen { display: none; }
   #player-box {
     width: 300px;
     height: 180px;
@@ -37,56 +152,147 @@
     cursor: pointer;
     overflow: hidden;
     position: relative;
-    transition: height 0.5s ease;
   }
-
-  #player-box.open {
-    height: auto;
-    padding: 20px;
-  }
-
   #player-box span {
     transition: transform 0.5s ease;
+    display: block;
   }
-
   #player-box.open span {
     transform: translateY(-50%);
   }
-
-  #next-btn {
-    display: none;
-    margin-top: 20px;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    background: red;
-    color: white;
-  }
-
 </style>
 </head>
 <body>
 
-<h1>IMPOSTOR</h1>
-<h2 id="player-name">Jugador: Juan</h2>
-
-<div id="player-box" onclick="revealWord()">
-  <span id="player-word">Pulsa para ver tu palabra</span>
+<!-- Pantalla inicio -->
+<div id="start-screen">
+  <h1>IMPOSTOR</h1>
+  <div id="start-button" onclick="showConfig()">IMPOSTOR</div>
 </div>
 
-<button id="next-btn" onclick="nextPlayer()">Siguiente jugador</button>
+<!-- Configuración -->
+<div id="config">
+  <h2>Configuración de la partida</h2>
+
+  <label for="players">Cantidad de jugadores</label>
+  <select id="players" onchange="updatePlayerGrid()">
+    <option value="3">3 jugadores</option>
+    <option value="4">4 jugadores</option>
+    <option value="5" selected>5 jugadores</option>
+    <option value="6">6 jugadores</option>
+    <option value="7">7 jugadores</option>
+    <option value="8">8 jugadores</option>
+    <option value="9">9 jugadores</option>
+    <option value="10">10 jugadores</option>
+    <option value="11">11 jugadores</option>
+    <option value="12">12 jugadores</option>
+  </select>
+
+  <label for="impostors">Cantidad de impostores</label>
+  <select id="impostors">
+    <option value="1" selected>1 impostor</option>
+    <option value="2">2 impostores</option>
+    <option value="3">3 impostores</option>
+  </select>
+
+  <label for="time">Tiempo de debate (minutos)</label>
+  <select id="time">
+    <option value="1">1 minuto</option>
+    <option value="2">2 minutos</option>
+    <option value="3" selected>3 minutos</option>
+    <option value="4">4 minutos</option>
+    <option value="5">5 minutos</option>
+    <option value="6">6 minutos</option>
+    <option value="7">7 minutos</option>
+  </select>
+
+  <label>Pista</label>
+  <div class="switch">
+    <input type="checkbox" id="hint" checked>
+  </div>
+
+  <label>Nombres de jugadores</label>
+  <div class="player-grid" id="playerGrid"></div>
+
+  <button onclick="startGame()">Nueva partida</button>
+</div>
+
+<!-- Pantalla jugador -->
+<div id="player-screen">
+  <h2 id="player-name"></h2>
+  <div id="player-box" onclick="revealWord()">
+    <span id="player-word">Pulsa para ver tu palabra</span>
+  </div>
+  <button id="next-btn" onclick="nextPlayer()">Siguiente jugador</button>
+</div>
+
+<!-- Pantalla debate (cronómetro y votar) -->
+<div id="debate-screen" style="display:none;">
+  <h2>Debate - Cronómetro: <span id="timer"></span> min</h2>
+  <button onclick="vote()">Votar</button>
+  <button onclick="newGame()">Nueva partida</button>
+</div>
 
 <script>
-  // Datos de prueba (luego se reemplaza con la configuración real)
-  const players = ['Juan', 'Ana', 'Luis', 'María', 'Pedro'];
-  const words = ['Messi', 'Fernet', 'Asado', 'Mate', 'Marley'];
+  // --- CONFIGURACION ---
+  let playerList = [];
+  let playerWords = [];
+  let roles = [];
   let currentPlayer = 0;
+  let totalPlayers = 0;
+  let totalImpostors = 0;
 
-  // Inicializa el primer jugador
+  const wordPool = ['Messi','Fernet','Asado','Mate','Marley','Pastel de papa','Maradona','Riquelme','Pan','Vino','Bombilla','Scaloni']; // ejemplo
+
+  function showConfig() {
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('config').style.display = 'block';
+    updatePlayerGrid();
+  }
+
+  function updatePlayerGrid() {
+    const count = parseInt(document.getElementById('players').value);
+    totalPlayers = count;
+    const grid = document.getElementById('playerGrid');
+    grid.innerHTML = '';
+    let cols = Math.min(4, count);
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    for(let i=1; i<=count; i++){
+      const input = document.createElement('input');
+      input.placeholder = `Jugador ${i}`;
+      grid.appendChild(input);
+    }
+  }
+
+  function startGame() {
+    playerList = Array.from(document.querySelectorAll('#playerGrid input')).map(i=>i.value || i.placeholder);
+    totalImpostors = parseInt(document.getElementById('impostors').value);
+    const hint = document.getElementById('hint').checked;
+
+    // --- ASIGNAR IMPOSORES ---
+    roles = Array(playerList.length).fill('ciudadano');
+    let impostorIndices = [];
+    while(impostorIndices.length < totalImpostors){
+      let r = Math.floor(Math.random() * playerList.length);
+      if(!impostorIndices.includes(r)) impostorIndices.push(r);
+    }
+    impostorIndices.forEach(i => roles[i]='impostor');
+
+    // --- ASIGNAR PALABRAS ---
+    playerWords = [];
+    for(let i=0;i<playerList.length;i++){
+      let word = wordPool[Math.floor(Math.random() * wordPool.length)];
+      playerWords.push(word);
+    }
+
+    document.getElementById('config').style.display = 'none';
+    document.getElementById('player-screen').style.display = 'block';
+    currentPlayer = 0;
+    showPlayer();
+  }
+
   function showPlayer() {
-    document.getElementById('player-name').innerText = `Jugador: ${players[currentPlayer]}`;
+    document.getElementById('player-name').innerText = `Jugador: ${playerList[currentPlayer]}`;
     document.getElementById('player-word').innerText = 'Pulsa para ver tu palabra';
     document.getElementById('player-box').classList.remove('open');
     document.getElementById('next-btn').style.display = 'none';
@@ -94,23 +300,38 @@
 
   function revealWord() {
     document.getElementById('player-box').classList.add('open');
-    document.getElementById('player-word').innerText = words[currentPlayer];
+    document.getElementById('player-word').innerText = playerWords[currentPlayer];
     document.getElementById('next-btn').style.display = 'inline-block';
   }
 
   function nextPlayer() {
     currentPlayer++;
-    if(currentPlayer >= players.length){
-      alert('Todos los jugadores han visto sus palabras. ¡Comienza el debate!');
-      // Aquí se podría pasar a la pantalla del debate con cronómetro
+    if(currentPlayer >= playerList.length){
+      document.getElementById('player-screen').style.display = 'none';
+      startDebate();
     } else {
       showPlayer();
     }
   }
 
-  // Mostrar el primer jugador al cargar
-  showPlayer();
+  // --- DEBATE ---
+  function startDebate() {
+    document.getElementById('debate-screen').style.display = 'block';
+    document.getElementById('timer').innerText = document.getElementById('time').value;
+    // Aquí se puede agregar cronómetro real
+  }
+
+  function vote() {
+    // Votación simulada aleatoria para ejemplo
+    let killed = Math.floor(Math.random()*playerList.length);
+    if(roles[killed]=='impostor') alert('¡Los ciudadanos ganan!');
+    else alert('Mataste a un inocente');
+  }
+
+  function newGame() {
+    location.reload();
+  }
 </script>
 
 </body>
-</html>
+  </html>
