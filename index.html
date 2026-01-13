@@ -1,107 +1,66 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Juegos Argentinos</title>
+  <meta charset="UTF-8">
+  <title>Impostor – ¿Quién soy?</title>
   <style>
-    * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
     body {
-      margin: 0;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .card {
+      background: white;
+      color: black;
+      width: 260px;
+      height: 160px;
+      margin: 20px auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #2e2e2e; /* gris */
-      color: #fff;
+      font-size: 26px;
+      border-radius: 10px;
     }
-    .container {
-      text-align: center;
-      background: #3a3a3a;
-      padding: 30px;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    }
-    h1 {
-      margin-bottom: 10px;
-      font-size: 32px;
-    }
-    .impostor {
-      color: #e53935; /* rojo */
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
-    .quien {
-      font-size: 28px;
-    }
-    .btn {
-      width: 100%;
-      padding: 15px;
-      margin-top: 15px;
+    button {
+      padding: 12px 20px;
       font-size: 18px;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       cursor: pointer;
     }
-    .btn-impostor {
-      background: #e53935;
-      color: #fff;
-    }
-    .btn-quien {
-      background: #607d8b;
-      color: #fff;
-    }
-    .btn:hover { opacity: 0.9; }
-  .input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0 15px 0;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-    }
-    label { text-align: left; display:block; font-size:14px; }
-    .switch { display:flex; gap:10px; align-items:center; margin-bottom:20px; }
   </style>
 </head>
 <body>
-  <div class="container" id="home">
-    <h1><span class="impostor">IMPOSTOR</span></h1>
-    <p>Versión argentina para jugar en familia</p>
-    <button class="btn btn-impostor" onclick="showConfig()">Entrar</button>
-  </div>  <div class="container" id="config" style="display:none;">
-    <h2>Configuración</h2><label>Cantidad de jugadores</label>
-<input type="number" id="players" min="3" max="15" value="5" class="input" />
 
-<label>Cantidad de impostores</label>
-<input type="number" id="impostors" min="1" max="3" value="1" class="input" />
+<h1>Impostor</h1>
+<p>Pasá el celu y tocá el botón</p>
 
-<label>Tiempo de debate (minutos)</label>
-<input type="number" id="time" min="1" max="10" value="3" class="input" />
-
-<label>Pista</label>
-<div class="switch">
-  <input type="checkbox" id="hint" checked />
-  <span>Activada</span>
+<div class="card" id="card">
+  ????
 </div>
 
-<label>Nombres de jugadores (uno por línea)</label>
-<textarea id="names" rows="5" placeholder="Juan
+<button onclick="siguiente()">Siguiente jugador</button>
 
-Mamá Tío Ana" class="input"></textarea>
-
-<button class="btn btn-impostor" onclick="startGame()">Nueva partida</button>
-
-  </div>
 <script>
-    function showConfig(){
-      document.getElementById('home').style.display='none';
-      document.getElementById('config').style.display='block';
-    }function startGame(){
-  alert('Configuración guardada. Próximo paso: pantalla del cuadrado');
-}
+  const roles = [
+    "Messi",
+    "Maradona",
+    "Mate",
+    "Asado",
+    "Fernet",
+    "Impostor"
+  ];
 
-  </script>
+  function siguiente() {
+    const random = Math.floor(Math.random() * roles.length);
+    document.getElementById("card").innerText = roles[random];
+  }
+</script>
+
 </body>
 </html>
