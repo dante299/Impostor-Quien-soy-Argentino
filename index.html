@@ -1,119 +1,160 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Impostor versión Argentina</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Impostor versión Argentina</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #000;
-      color: #ddd;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #ccc;
+}
 
-    .screen {
-      display: none;
-      min-height: 100vh;
-      padding: 20px;
-      box-sizing: border-box;
-      text-align: center;
-    }
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
 
-    .screen.active {
-      display: block;
-    }
+.screen.active { display: block; }
 
-    h1 {
-      margin-top: 40px;
-      margin-bottom: 40px;
-      font-size: 32px;
-      color: #bbb;
-    }
+h1 {
+  margin: 30px 0;
+  color: #bbb;
+}
 
-    .main-btn {
-      background: linear-gradient(135deg, #ff2a2a, #b80000);
-      color: #000;
-      font-size: 36px;
-      font-weight: bold;
-      padding: 30px 40px;
-      border-radius: 25px;
-      display: inline-block;
-      cursor: pointer;
-      user-select: none;
-    }
+.main-btn {
+  background: linear-gradient(135deg, #ff2a2a, #b80000);
+  color: #000;
+  font-size: 36px;
+  font-weight: bold;
+  padding: 35px 50px;
+  border-radius: 30px;
+  cursor: pointer;
+  display: inline-block;
+}
 
-    .box {
-      background: #111;
-      padding: 20px;
-      border-radius: 15px;
-      margin: 15px auto;
-      max-width: 400px;
-    }
+.box {
+  background: #111;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 15px auto;
+  max-width: 420px;
+}
 
-    select, button, input {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-    }
+select, input, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
 
-    button {
-      background: #ff2a2a;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button {
+  background: #ff2a2a;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .reveal-box {
-      background: #000;
-      border: 2px solid #333;
-      border-radius: 20px;
-      padding: 40px;
-      margin-top: 40px;
-      font-size: 28px;
-      color: #ccc;
-    }
+/* interruptor real */
+.switch {
+  position: relative;
+  width: 50px;
+  height: 26px;
+}
+.switch input { display:none; }
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #555;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: .3s;
+}
+input:checked + .slider {
+  background: #ff2a2a;
+}
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
 
-    .impostor {
-      color: red;
-      font-size: 36px;
-      font-weight: bold;
-    }
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
 
-    .small {
-      font-size: 18px;
-      margin-top: 10px;
-      color: #aaa;
-    }
+/* revelar */
+.reveal-box {
+  background: #000;
+  border: 2px solid #333;
+  border-radius: 20px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-top: 30px;
+  user-select: none;
+}
 
-    .toggle {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-    }
-  </style>
+.hidden {
+  color: #444;
+}
+
+.impostor {
+  color: red;
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.small {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+.vote-btn {
+  background: #222;
+  color: #fff;
+  margin-top: 8px;
+}
+</style>
 </head>
 
 <body>
 
-<!-- PANTALLA INICIO -->
+<!-- HOME -->
 <div id="home" class="screen active">
   <h1>Impostor versión Argentina</h1>
-  <div class="main-btn" onclick="goConfig()">IMPOSTOR</div>
+  <div class="main-btn" onclick="show('config')">IMPOSTOR</div>
 </div>
 
-<!-- CONFIGURACIÓN -->
+<!-- CONFIG -->
 <div id="config" class="screen">
   <h1>Configurar partida</h1>
 
   <div class="box">
     <label>Cantidad de jugadores</label>
-    <select id="playersCount">
+    <select id="playersCount" onchange="updatePlayers()">
       <option value="3">3</option>
       <option value="4">4</option>
       <option value="5">5</option>
@@ -126,6 +167,8 @@
       <option value="12">12</option>
     </select>
 
+    <div id="playerInputs"></div>
+
     <label>Cantidad de impostores</label>
     <select id="impostorsCount">
       <option value="1">1</option>
@@ -135,18 +178,21 @@
 
     <label>Tiempo de debate</label>
     <select id="timeCount">
-      <option>1 minuto</option>
-      <option>2 minutos</option>
-      <option>3 minutos</option>
-      <option>4 minutos</option>
-      <option>5 minutos</option>
-      <option>6 minutos</option>
-      <option>7 minutos</option>
+      <option value="1">1 minuto</option>
+      <option value="2">2 minutos</option>
+      <option value="3">3 minutos</option>
+      <option value="4">4 minutos</option>
+      <option value="5">5 minutos</option>
+      <option value="6">6 minutos</option>
+      <option value="7">7 minutos</option>
     </select>
 
-    <div class="toggle">
-      <span>Pista activada</span>
-      <input type="checkbox" id="clueToggle">
+    <div class="toggle-row">
+      <span>Pista</span>
+      <label class="switch">
+        <input type="checkbox" id="clueToggle">
+        <span class="slider"></span>
+      </label>
     </div>
 
     <button onclick="startGame()">Nueva partida</button>
@@ -157,75 +203,114 @@
 <div id="reveal" class="screen">
   <h1 id="playerName"></h1>
 
-  <div class="reveal-box" id="word"></div>
+  <div class="reveal-box hidden" id="revealBox" onclick="revealWord()">
+    DESLIZÁ / TOCÁ PARA VER
+  </div>
 
   <button onclick="nextPlayer()">Siguiente jugador</button>
 </div>
 
+<!-- DEBATE -->
+<div id="debate" class="screen">
+  <h1>Debate</h1>
+  <h2 id="timer"></h2>
+  <div id="votes"></div>
+  <button onclick="show('config')">Nueva partida</button>
+</div>
+
 <script>
-  const palabra = "ASADO";
-  const categoria = "COMIDA";
-  const pista = "DOMINGO";
+const palabra = "ASADO";
+const categoria = "COMIDA";
+const pista = "DOMINGO";
 
-  let players = [];
-  let impostors = [];
-  let current = 0;
+let players = [];
+let impostors = [];
+let current = 0;
+let timeLeft;
+let timerInterval;
 
-  function show(id) {
-    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function updatePlayers() {
+  const count = playersCount.value;
+  playerInputs.innerHTML = "";
+  for (let i = 1; i <= count; i++) {
+    const input = document.createElement("input");
+    input.placeholder = "Jugador " + i;
+    playerInputs.appendChild(input);
+  }
+}
+
+function startGame() {
+  players = [...playerInputs.querySelectorAll("input")].map((i, idx) => i.value || "Jugador " + (idx+1));
+
+  impostors = [];
+  while (impostors.length < impostorsCount.value) {
+    const r = Math.floor(Math.random() * players.length);
+    if (!impostors.includes(r)) impostors.push(r);
   }
 
-  function goConfig() {
-    show("config");
+  current = 0;
+  showReveal();
+}
+
+function showReveal() {
+  show("reveal");
+  playerName.innerText = players[current];
+  revealBox.innerText = "DESLIZÁ / TOCÁ PARA VER";
+  revealBox.classList.add("hidden");
+}
+
+function revealWord() {
+  revealBox.classList.remove("hidden");
+
+  if (impostors.includes(current)) {
+    revealBox.innerHTML = `
+      <div class="impostor">¡IMPOSTOR!</div>
+      <div class="small">(${clueToggle.checked ? pista : categoria})</div>
+    `;
+  } else {
+    revealBox.innerText = palabra;
   }
+}
 
-  function startGame() {
-    const total = parseInt(document.getElementById("playersCount").value);
-    const impCount = parseInt(document.getElementById("impostorsCount").value);
-
-    players = [];
-    for (let i = 1; i <= total; i++) {
-      players.push("Jugador " + i);
-    }
-
-    impostors = [];
-    while (impostors.length < impCount) {
-      const r = Math.floor(Math.random() * total);
-      if (!impostors.includes(r)) impostors.push(r);
-    }
-
-    current = 0;
-    reveal();
+function nextPlayer() {
+  current++;
+  if (current < players.length) {
+    showReveal();
+  } else {
+    startDebate();
   }
+}
 
-  function reveal() {
-    show("reveal");
-    document.getElementById("playerName").innerText = players[current];
+function startDebate() {
+  show("debate");
+  votes.innerHTML = "";
+  players.forEach(p => {
+    const b = document.createElement("button");
+    b.className = "vote-btn";
+    b.innerText = p;
+    votes.appendChild(b);
+  });
 
-    const pistaOn = document.getElementById("clueToggle").checked;
-    const wordBox = document.getElementById("word");
+  timeLeft = timeCount.value * 60;
+  updateTimer();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) clearInterval(timerInterval);
+  }, 1000);
+}
 
-    if (impostors.includes(current)) {
-      wordBox.innerHTML = `
-        <div class="impostor">¡IMPOSTOR!</div>
-        <div class="small">${pistaOn ? pista : categoria}</div>
-      `;
-    } else {
-      wordBox.innerText = palabra;
-    }
-  }
-
-  function nextPlayer() {
-    current++;
-    if (current < players.length) {
-      reveal();
-    } else {
-      alert("Todos vieron su rol. Empieza el debate.");
-      show("home");
-    }
-  }
+function updateTimer() {
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  timer.innerText = `${m}:${s.toString().padStart(2,"0")}`;
+}
 </script>
 
 </body>
-                                                 </html>
+</html>
