@@ -3,305 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMPOSTOR ARG</title>
+
+<title>Impostor ARG</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
 }
 
 body {
-  margin: 0;
   background: #000;
   color: #fff;
-  text-align: center;
-}
-
-/* ---------- PANTALLAS ---------- */
-.screen {
-  display: none;
-  padding: 20px;
-}
-
-.active {
-  display: block;
-}
-
-/* ---------- HOME ---------- */
-#home {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: 'Montserrat', sans-serif;
   height: 100vh;
 }
 
-#startBox {
-  width: 280px;
-  height: 280px;
-  background: linear-gradient(135deg, #ff0000, #a80000);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+/* PANTALLAS */
+.screen {
+  display: none;
+  width: 100%;
+  height: 100vh;
 }
 
-#startBox h1 {
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* TITULO */
+#title {
+  margin-top: 40px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* CONTENEDOR BOTON */
+#centerBox {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* BOTON IMPOSTOR */
+#impostorBtn {
+  padding: 30px 70px;
+  background: linear-gradient(135deg, #ff0000, #8b0000);
+  border-radius: 22px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(255,0,0,0.4);
+  transition: transform 0.15s ease;
+}
+
+#impostorBtn:active {
+  transform: scale(0.95);
+}
+
+#impostorBtn span {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 4px;
   color: #000;
-  font-size: 36px;
-  letter-spacing: 3px;
 }
 
-/* ---------- CONFIG ---------- */
-select, input, button {
-  padding: 10px;
-  font-size: 16px;
-  margin: 8px;
-}
-
-.toggle {
-  display: inline-block;
-  width: 60px;
-  height: 30px;
-  background: #555;
-  border-radius: 20px;
-  position: relative;
-  cursor: pointer;
-}
-
-.toggle::after {
-  content: '';
-  width: 26px;
-  height: 26px;
-  background: white;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  transition: 0.3s;
-}
-
-.toggle.on {
-  background: green;
-}
-
-.toggle.on::after {
-  left: 32px;
-}
-
-/* ---------- REVELAR ---------- */
-#revealBox {
-  width: 90%;
-  max-width: 400px;
-  height: 200px;
-  margin: 30px auto;
-  background: #000;
-  border: 3px solid #fff;
-  display: flex;
-  align-items: center;
+/* SEGUNDA PANTALLA */
+#nextScreen {
   justify-content: center;
-  font-size: 28px;
-  color: #fff;
-  cursor: pointer;
-}
-
-.hiddenText {
-  filter: blur(12px);
-}
-
-/* ---------- VOTACIÓN ---------- */
-.voteGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.voteCard {
-  padding: 15px;
-  background: #222;
-  cursor: pointer;
-  border: 2px solid #555;
-}
-
-.voteCard:hover {
-  background: #444;
+  font-size: 2rem;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HOME -->
+<!-- PANTALLA INICIAL -->
 <div id="home" class="screen active">
-  <div id="startBox">
-    <h1>IMPOSTOR</h1>
+  <div id="title">Impostor – Versión Argentina</div>
+
+  <div id="centerBox">
+    <div id="impostorBtn">
+      <span>IMPOSTOR</span>
+    </div>
   </div>
 </div>
 
-<!-- CONFIG -->
-<div id="config" class="screen">
-  <h2>Configuración</h2>
-
-  <div>
-    Jugadores:
-    <select id="playersCount">
-      <option>3</option><option>4</option><option>5</option>
-      <option>6</option><option>7</option><option>8</option>
-      <option>9</option><option>10</option><option>11</option><option>12</option>
-    </select>
-  </div>
-
-  <div>
-    Impostores:
-    <select id="impostorsCount">
-      <option>1</option><option>2</option><option>3</option>
-    </select>
-  </div>
-
-  <div>
-    Tiempo debate:
-    <select id="timeCount">
-      <option value="60">1 min</option>
-      <option value="120">2 min</option>
-      <option value="180">3 min</option>
-      <option value="240">4 min</option>
-      <option value="300">5 min</option>
-      <option value="360">6 min</option>
-      <option value="420">7 min</option>
-    </select>
-  </div>
-
-  <div>
-    Pista:
-    <div id="pistaToggle" class="toggle on"></div>
-  </div>
-
-  <button onclick="startGame()">Nueva partida</button>
-</div>
-
-<!-- REVELAR -->
-<div id="reveal" class="screen">
-  <h2 id="playerName"></h2>
-  <div id="revealBox" class="hiddenText">DESLIZÁ</div>
-  <button id="nextBtn" style="display:none" onclick="nextPlayer()">Siguiente jugador</button>
-</div>
-
-<!-- DEBATE -->
-<div id="debate" class="screen">
-  <h2>Debate</h2>
-  <h3 id="timer"></h3>
-
-  <div class="voteGrid" id="voteGrid"></div>
-
-  <button onclick="newGame()">Nueva partida</button>
+<!-- PANTALLA SIGUIENTE -->
+<div id="nextScreen" class="screen">
+  <div>Funciona ✅</div>
 </div>
 
 <script>
-/* ---------- DATOS ---------- */
-const words = [
-  {word:"Asado", category:"Comida", clue:"Domingo"},
-  {word:"Mate", category:"Costumbre", clue:"Ronda"},
-  {word:"Messi", category:"Fútbol", clue:"Zurdo"},
-  {word:"Fernet", category:"Bebida", clue:"Negro"},
-  {word:"Plaza", category:"Lugar", clue:"Banco"},
-  {word:"Pelopincho", category:"Verano", clue:"Patio"}
-];
+const home = document.getElementById("home");
+const nextScreen = document.getElementById("nextScreen");
+const btn = document.getElementById("impostorBtn");
 
-let players = [];
-let impostors = [];
-let current = 0;
-let chosenWord;
-let pistaOn = true;
-let timeLeft;
-let timerInterval;
-
-/* ---------- HOME ---------- */
-startBox.onclick = () => show("config");
-
-/* ---------- TOGGLE ---------- */
-pistaToggle.onclick = () => {
-  pistaToggle.classList.toggle("on");
-  pistaOn = pistaToggle.classList.contains("on");
-};
-
-/* ---------- GAME ---------- */
-function startGame() {
-  const pc = Number(playersCount.value);
-  const ic = Number(impostorsCount.value);
-
-  players = [];
-  for(let i=1;i<=pc;i++) players.push("Jugador " + i);
-
-  impostors = [];
-  while(impostors.length < ic) {
-    let r = Math.floor(Math.random()*pc);
-    if(!impostors.includes(r)) impostors.push(r);
-  }
-
-  chosenWord = words[Math.floor(Math.random()*words.length)];
-  current = 0;
-  show("reveal");
-  prepareReveal();
-}
-
-function prepareReveal() {
-  playerName.textContent = players[current];
-  revealBox.textContent = "DESLIZÁ";
-  revealBox.classList.add("hiddenText");
-  nextBtn.style.display = "none";
-
-  revealBox.onclick = () => {
-    revealBox.classList.remove("hiddenText");
-    if(impostors.includes(current)) {
-      revealBox.textContent = pistaOn ? chosenWord.clue : chosenWord.category;
-    } else {
-      revealBox.textContent = chosenWord.word;
-    }
-    nextBtn.style.display = "block";
-  };
-}
-
-function nextPlayer() {
-  current++;
-  if(current < players.length) {
-    prepareReveal();
-  } else {
-    startDebate();
-  }
-}
-
-function startDebate() {
-  show("debate");
-  voteGrid.innerHTML = "";
-  players.forEach(p=>{
-    const d = document.createElement("div");
-    d.className = "voteCard";
-    d.textContent = p;
-    voteGrid.appendChild(d);
-  });
-
-  timeLeft = Number(timeCount.value);
-  updateTimer();
-  timerInterval = setInterval(()=>{
-    timeLeft--;
-    updateTimer();
-    if(timeLeft<=0) clearInterval(timerInterval);
-  },1000);
-}
-
-function updateTimer() {
-  timer.textContent = `Tiempo: ${Math.floor(timeLeft/60)}:${(timeLeft%60).toString().padStart(2,"0")}`;
-}
-
-function newGame() {
-  location.reload();
-}
-
-function show(id) {
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
+btn.addEventListener("click", () => {
+  home.classList.remove("active");
+  nextScreen.classList.add("active");
+});
 </script>
 
 </body>
