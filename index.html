@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Impostor – ¿Quién soy?</title>
+  <title>Impostor – Juego Argentino</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,56 +11,144 @@
       text-align: center;
       padding: 20px;
     }
+
     h1 {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
-    .card {
+
+    /* Cuadrado inicial */
+    #start-button {
       background: white;
-      color: black;
-      width: 260px;
-      height: 160px;
-      margin: 20px auto;
+      color: red;
+      font-size: 36px;
+      width: 250px;
+      height: 150px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
-      border-radius: 10px;
+      margin: 50px auto;
+      border-radius: 15px;
+      cursor: pointer;
+      user-select: none;
     }
+
+    /* Configuración */
+    #config {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-size: 16px;
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
     button {
       padding: 12px 20px;
       font-size: 18px;
+      border-radius: 10px;
       border: none;
-      border-radius: 8px;
       cursor: pointer;
+      margin-top: 20px;
+      background: red;
+      color: white;
     }
+
   </style>
 </head>
 <body>
 
-<h1>Impostor</h1>
-<p>Pasá el celu y tocá el botón</p>
+  <h1>IMPOSTOR</h1>
 
-<div class="card" id="card">
-  ????
-</div>
+  <div id="start-button" onclick="showConfig()">IMPOSTOR</div>
 
-<button onclick="siguiente()">Siguiente jugador</button>
+  <div id="config">
+    <h2>Configuración de la partida</h2>
 
-<script>
-  const roles = [
-    "Messi",
-    "Maradona",
-    "Mate",
-    "Asado",
-    "Fernet",
-    "Impostor"
-  ];
+    <label for="players">Cantidad de jugadores</label>
+    <select id="players">
+      <option value="3">3 jugadores</option>
+      <option value="4">4 jugadores</option>
+      <option value="5" selected>5 jugadores</option>
+      <option value="6">6 jugadores</option>
+      <option value="7">7 jugadores</option>
+      <option value="8">8 jugadores</option>
+      <option value="9">9 jugadores</option>
+      <option value="10">10 jugadores</option>
+      <option value="11">11 jugadores</option>
+      <option value="12">12 jugadores</option>
+    </select>
 
-  function siguiente() {
-    const random = Math.floor(Math.random() * roles.length);
-    document.getElementById("card").innerText = roles[random];
-  }
-</script>
+    <label for="impostors">Cantidad de impostores</label>
+    <select id="impostors">
+      <option value="1" selected>1 impostor</option>
+      <option value="2">2 impostores</option>
+      <option value="3">3 impostores</option>
+    </select>
+
+    <label for="time">Tiempo de debate (minutos)</label>
+    <select id="time">
+      <option value="1">1 minuto</option>
+      <option value="2">2 minutos</option>
+      <option value="3" selected>3 minutos</option>
+      <option value="4">4 minutos</option>
+      <option value="5">5 minutos</option>
+      <option value="6">6 minutos</option>
+      <option value="7">7 minutos</option>
+    </select>
+
+    <label>Pista</label>
+    <div class="switch">
+      <input type="checkbox" id="hint" checked>
+      <span>Activada</span>
+    </div>
+
+    <label for="names">Nombres de jugadores (uno por línea)</label>
+    <textarea id="names" rows="5" placeholder="Juan&#10;Ana&#10;Tío"></textarea>
+
+    <button onclick="startGame()">Nueva partida</button>
+  </div>
+
+  <script>
+    function showConfig() {
+      document.getElementById('start-button').style.display = 'none';
+      document.getElementById('config').style.display = 'block';
+    }
+
+    function startGame() {
+      const players = document.getElementById('players').value;
+      const impostors = document.getElementById('impostors').value;
+      const time = document.getElementById('time').value;
+      const hint = document.getElementById('hint').checked;
+      const names = document.getElementById('names').value.split("\n").filter(n => n.trim() !== "");
+
+      // Por ahora solo mostramos la configuración
+      alert(`Jugadores: ${players}\nImpostores: ${impostors}\nTiempo: ${time} min\nPista: ${hint ? 'ON' : 'OFF'}\nNombres: ${names.join(', ')}`);
+      
+      // Aquí después vamos a pasar a la pantalla del juego real
+    }
+  </script>
 
 </body>
 </html>
