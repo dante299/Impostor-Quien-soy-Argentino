@@ -45,7 +45,7 @@ input:checked + .slider:before { transform:translateX(24px); }
   border-radius:20px;
   height:180px;
   display:flex;
-  align-items:flex-end;
+  align-items:flex-start;
   justify-content:center;
   font-size:28px;
   margin-top:30px;
@@ -67,11 +67,19 @@ input:checked + .slider:before { transform:translateX(24px); }
   border-radius:20px;
   cursor:pointer;
   font-weight:bold;
+  z-index:2;
 }
 .word-inner {
   position:absolute;
-  bottom:0;
+  top:0;
+  left:0;
   width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:1;
 }
 .impostor { color:red; font-size:34px; font-weight:bold; }
 .small { font-size:18px; margin-top:10px; color:#aaa; }
@@ -139,6 +147,7 @@ input:checked + .slider:before { transform:translateX(24px); }
 </div>
 
 <script>
+// Palabra y pistas
 const palabra = "ASADO";
 const categoria = "COMIDA";
 const pista = "DOMINGO";
@@ -150,6 +159,7 @@ function show(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
+
 function updatePlayers(){
   const count=playersCount.value;
   playerInputs.innerHTML="";
@@ -181,14 +191,19 @@ let startY=0, currentY=0, isDragging=false;
 
 tapa.addEventListener("touchstart",e=>{isDragging=true; startY=e.touches[0].clientY;});
 tapa.addEventListener("touchmove",e=>{
-  if(!isDragging)return;
+  if(!isDragging) return;
   currentY=e.touches[0].clientY;
   let diff=startY-currentY;
-  if(diff>0) tapa.style.transform=`translateY(${-Math.min(diff,180)}px)`;
+  if(diff>0) {
+    tapa.style.transform=`translateY(${-Math.min(diff,180)}px)`;
+    // palabra sube junto con la tapa
+    wordInner.style.transform=`translateY(${-Math.min(diff,180)}px)`;
+  }
 });
 tapa.addEventListener("touchend",e=>{
   isDragging=false;
   tapa.style.transform="translateY(-180px)";
+  wordInner.style.transform="translateY(-180px)";
   revealWord();
 });
 
@@ -196,13 +211,13 @@ function showReveal(){
   show("reveal");
   playerName.innerText=players[current];
   tapa.style.transform="translateY(0)";
+  wordInner.style.transform="translateY(0)";
   tapa.style.display="flex";
   wordInner.innerHTML="";
   nextBtn.style.display="none";
 }
 
 function revealWord(){
-  tapa.style.display="none";
   if(impostors.includes(current)){
     wordInner.innerHTML=`<div class="impostor">¡IMPOSTOR!</div><div class="small">${clueToggle.checked?`(${pista})`:categoria}</div>`;
   } else {
@@ -245,4 +260,4 @@ function updateTimer(){
 }
 </script>
 </body>
-                                    </html>
+</html>
