@@ -1,226 +1,116 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Impostor – Juego Argentino</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impostor – Jugadores</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #888; /* Pantalla principal gris */
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #888;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
 
-    h1 {
-      margin-bottom: 30px;
-    }
+  h1, h2 {
+    margin-bottom: 20px;
+  }
 
-    /* Cuadrado principal */
-    #start-button {
-      background: linear-gradient(135deg, #ff4d4d, #cc0000); /* degradé rojo */
-      color: black; /* palabra IMPOSTOR en negro */
-      font-size: 42px;
-      font-weight: 600;
-      width: 300px;
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 50px auto;
-      border-radius: 20px;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+  /* Cuadro jugador */
+  #player-box {
+    width: 300px;
+    height: 180px;
+    margin: 50px auto;
+    background: linear-gradient(135deg, #ff4d4d, #cc0000);
+    color: black;
+    font-size: 28px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: height 0.5s ease;
+  }
 
-    #start-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-    }
+  #player-box.open {
+    height: auto;
+    padding: 20px;
+  }
 
-    /* Configuración */
-    #config {
-      display: none;
-      margin-top: 20px;
-      text-align: left;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+  #player-box span {
+    transition: transform 0.5s ease;
+  }
 
-    label {
-      display: block;
-      margin: 15px 0 5px;
-      font-size: 16px;
-    }
+  #player-box.open span {
+    transform: translateY(-50%);
+  }
 
-    select, input {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      margin-bottom: 10px;
-    }
+  #next-btn {
+    display: none;
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: red;
+    color: white;
+  }
 
-    .switch {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    /* Interruptor animado */
-    .switch input {
-      position: relative;
-      width: 50px;
-      height: 25px;
-      -webkit-appearance: none;
-      background: #ccc;
-      outline: none;
-      border-radius: 25px;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-
-    .switch input:checked {
-      background: #4caf50;
-    }
-
-    .switch input::before {
-      content: '';
-      position: absolute;
-      width: 23px;
-      height: 23px;
-      border-radius: 50%;
-      top: 1px;
-      left: 1px;
-      background: white;
-      transition: 0.3s;
-    }
-
-    .switch input:checked::before {
-      transform: translateX(25px);
-    }
-
-    .player-grid {
-      display: grid;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .player-grid input {
-      width: 100%;
-      padding: 8px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      color: black;
-    }
-
-    button {
-      padding: 12px 20px;
-      font-size: 18px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      margin-top: 20px;
-      background: red;
-      color: white;
-    }
-  </style>
+</style>
 </head>
 <body>
 
-  <h1>IMPOSTOR</h1>
+<h1>IMPOSTOR</h1>
+<h2 id="player-name">Jugador: Juan</h2>
 
-  <div id="start-button" onclick="showConfig()">IMPOSTOR</div>
+<div id="player-box" onclick="revealWord()">
+  <span id="player-word">Pulsa para ver tu palabra</span>
+</div>
 
-  <div id="config">
-    <h2>Configuración de la partida</h2>
+<button id="next-btn" onclick="nextPlayer()">Siguiente jugador</button>
 
-    <label for="players">Cantidad de jugadores</label>
-    <select id="players" onchange="updatePlayerGrid()">
-      <option value="3">3 jugadores</option>
-      <option value="4">4 jugadores</option>
-      <option value="5" selected>5 jugadores</option>
-      <option value="6">6 jugadores</option>
-      <option value="7">7 jugadores</option>
-      <option value="8">8 jugadores</option>
-      <option value="9">9 jugadores</option>
-      <option value="10">10 jugadores</option>
-      <option value="11">11 jugadores</option>
-      <option value="12">12 jugadores</option>
-    </select>
+<script>
+  // Datos de prueba (luego se reemplaza con la configuración real)
+  const players = ['Juan', 'Ana', 'Luis', 'María', 'Pedro'];
+  const words = ['Messi', 'Fernet', 'Asado', 'Mate', 'Marley'];
+  let currentPlayer = 0;
 
-    <label for="impostors">Cantidad de impostores</label>
-    <select id="impostors">
-      <option value="1" selected>1 impostor</option>
-      <option value="2">2 impostores</option>
-      <option value="3">3 impostores</option>
-    </select>
+  // Inicializa el primer jugador
+  function showPlayer() {
+    document.getElementById('player-name').innerText = `Jugador: ${players[currentPlayer]}`;
+    document.getElementById('player-word').innerText = 'Pulsa para ver tu palabra';
+    document.getElementById('player-box').classList.remove('open');
+    document.getElementById('next-btn').style.display = 'none';
+  }
 
-    <label for="time">Tiempo de debate (minutos)</label>
-    <select id="time">
-      <option value="1">1 minuto</option>
-      <option value="2">2 minutos</option>
-      <option value="3" selected>3 minutos</option>
-      <option value="4">4 minutos</option>
-      <option value="5">5 minutos</option>
-      <option value="6">6 minutos</option>
-      <option value="7">7 minutos</option>
-    </select>
+  function revealWord() {
+    document.getElementById('player-box').classList.add('open');
+    document.getElementById('player-word').innerText = words[currentPlayer];
+    document.getElementById('next-btn').style.display = 'inline-block';
+  }
 
-    <label>Pista</label>
-    <div class="switch">
-      <input type="checkbox" id="hint" checked>
-    </div>
-
-    <label>Nombres de jugadores</label>
-    <div class="player-grid" id="playerGrid"></div>
-
-    <button onclick="startGame()">Nueva partida</button>
-  </div>
-
-  <script>
-    function showConfig() {
-      document.getElementById('start-button').style.display = 'none';
-      document.getElementById('config').style.display = 'block';
-      updatePlayerGrid();
+  function nextPlayer() {
+    currentPlayer++;
+    if(currentPlayer >= players.length){
+      alert('Todos los jugadores han visto sus palabras. ¡Comienza el debate!');
+      // Aquí se podría pasar a la pantalla del debate con cronómetro
+    } else {
+      showPlayer();
     }
+  }
 
-    function updatePlayerGrid() {
-      const count = parseInt(document.getElementById('players').value);
-      const grid = document.getElementById('playerGrid');
-      grid.innerHTML = '';
-      // Definir columnas según cantidad de jugadores
-      let cols = Math.min(4, count);
-      grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-
-      for(let i=1; i<=count; i++){
-        const input = document.createElement('input');
-        input.placeholder = `Jugador ${i}`;
-        grid.appendChild(input);
-      }
-    }
-
-    function startGame() {
-      const players = Array.from(document.querySelectorAll('#playerGrid input')).map(i=>i.value || i.placeholder);
-      const impostors = document.getElementById('impostors').value;
-      const time = document.getElementById('time').value;
-      const hint = document.getElementById('hint').checked;
-
-      alert(`Jugadores: ${players.join(', ')}\nImpostores: ${impostors}\nTiempo: ${time} min\nPista: ${hint ? 'ON' : 'OFF'}`);
-      
-      // Aquí después se lanzará la pantalla del juego real
-    }
-  </script>
+  // Mostrar el primer jugador al cargar
+  showPlayer();
+</script>
 
 </body>
 </html>
