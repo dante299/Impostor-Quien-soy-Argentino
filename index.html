@@ -6,8 +6,6 @@
 
 <title>Impostor ARG</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-
 <style>
 * {
   margin: 0;
@@ -16,8 +14,8 @@
 }
 
 body {
-  background: #000;
-  font-family: 'Poppins', sans-serif;
+  background: black;
+  font-family: Arial, sans-serif;
   height: 100vh;
 }
 
@@ -35,45 +33,37 @@ body {
 
 /* TITULO */
 #title {
-  width: 100%;
   text-align: center;
   margin-top: 40px;
-  font-size: 1.9rem;
-  font-weight: 600;
-  color: #9e9e9e;
+  font-size: 1.8rem;
+  color: #9c9c9c;
 }
 
 /* CENTRO */
-#centerBox {
+#center {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* BOTÓN IMPOSTOR */
+/* BOTÓN */
 #impostorBtn {
-  padding: 70px 80px;
-  background: linear-gradient(135deg, #ff1a1a, #7a0000);
-  border-radius: 999px; /* PUNTAS BIEN REDONDEADAS */
+  padding: 70px 120px;
+  background: linear-gradient(135deg, red, darkred);
+  border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 12px 30px rgba(255,0,0,0.35);
-  transition: transform 0.15s ease;
-}
-
-#impostorBtn:active {
-  transform: scale(0.95);
 }
 
 #impostorBtn span {
-  font-size: 2.8rem;
-  font-weight: 700;
-  letter-spacing: 6px;
-  color: #000;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: black;
+  letter-spacing: 5px;
 }
 
 /* SEGUNDA PANTALLA */
-#nextScreen {
+#next {
   justify-content: center;
   align-items: center;
   color: white;
@@ -84,30 +74,24 @@ body {
 
 <body>
 
-<!-- HOME -->
 <div id="home" class="screen active">
   <div id="title">Impostor – Versión Argentina</div>
 
-  <div id="centerBox">
+  <div id="center">
     <div id="impostorBtn">
       <span>IMPOSTOR</span>
     </div>
   </div>
 </div>
 
-<!-- SIGUIENTE -->
-<div id="nextScreen" class="screen">
-  <div>Funciona ✅</div>
+<div id="next" class="screen">
+  <div>Arrancó la partida</div>
 </div>
 
 <script>
-const home = document.getElementById("home");
-const nextScreen = document.getElementById("nextScreen");
-const btn = document.getElementById("impostorBtn");
-
-btn.onclick = () => {
-  home.classList.remove("active");
-  nextScreen.classList.add("active");
+document.getElementById("impostorBtn").onclick = function () {
+  document.getElementById("home").classList.remove("active");
+  document.getElementById("next").classList.add("active");
 };
 </script>
 
