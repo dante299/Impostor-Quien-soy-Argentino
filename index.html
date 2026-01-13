@@ -6,10 +6,7 @@
 <title>Impostor - Versión Argentina</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+* { box-sizing: border-box; font-family: Arial, sans-serif; }
 
 body {
   margin: 0;
@@ -28,32 +25,28 @@ body {
   padding: 20px;
 }
 
-.screen.active {
-  display: block;
-}
+.screen.active { display: block; }
 
 h1 {
   text-align: center;
   color: #bfbfbf;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
-/* BOTÓN IMPOSTOR */
+/* BOTÓN PRINCIPAL */
 .main-button {
   background: linear-gradient(135deg, #ff3b3b, #c70000);
   color: #000;
   text-align: center;
-  padding: 32px 0;
-  border-radius: 22px;
+  padding: 34px 0;
+  border-radius: 24px;
   font-size: 26px;
   font-weight: bold;
   cursor: pointer;
 }
 
 /* CONFIG */
-.config-group {
-  margin-bottom: 22px;
-}
+.config-group { margin-bottom: 22px; }
 
 label {
   display: block;
@@ -77,45 +70,6 @@ select, input {
   margin-top: 10px;
 }
 
-/* SWITCH */
-.switch {
-  position: relative;
-  width: 52px;
-  height: 28px;
-}
-
-.switch input {
-  opacity: 0;
-}
-
-.slider {
-  position: absolute;
-  inset: 0;
-  background: #555;
-  border-radius: 28px;
-  cursor: pointer;
-}
-
-.slider:before {
-  content: "";
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  background: #fff;
-  border-radius: 50%;
-  left: 3px;
-  bottom: 3px;
-  transition: .3s;
-}
-
-.switch input:checked + .slider {
-  background: #2ecc71;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(24px);
-}
-
 .new-game {
   margin-top: 35px;
   background: #222;
@@ -127,7 +81,7 @@ select, input {
   cursor: pointer;
 }
 
-/* REVELAR PALABRA */
+/* REVELAR */
 .player-name {
   text-align: center;
   font-size: 20px;
@@ -137,14 +91,13 @@ select, input {
 .reveal-box {
   background: #000;
   border: 2px solid #444;
-  border-radius: 20px;
-  height: 160px;
+  border-radius: 22px;
+  height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
+  font-size: 24px;
   color: #fff;
-  overflow: hidden;
   position: relative;
 }
 
@@ -195,15 +148,7 @@ select, input {
     <div class="players-grid" id="players"></div>
   </div>
 
-  <div class="config-group">
-    <label>Pista</label>
-    <label class="switch">
-      <input type="checkbox">
-      <span class="slider"></span>
-    </label>
-  </div>
-
-  <div class="new-game" onclick="startReveal()">Nueva partida</div>
+  <div class="new-game" onclick="startGame()">Nueva partida</div>
 </div>
 
 <!-- REVELAR -->
@@ -212,7 +157,7 @@ select, input {
 
   <div class="reveal-box">
     <div id="word">ASADO</div>
-    <div class="cover" onclick="reveal()">Deslizá para ver</div>
+    <div class="cover" onclick="revealWord()">Tocá para ver</div>
   </div>
 
   <div class="next-btn" onclick="nextPlayer()">Siguiente jugador</div>
@@ -223,41 +168,43 @@ let players = [];
 let current = 0;
 
 function goConfig() {
-  document.getElementById('home').classList.remove('active');
-  document.getElementById('config').classList.add('active');
+  showScreen('config');
 }
 
 function createInputs() {
-  const count = playerCount.value;
-  players = [];
-  playersDiv = document.getElementById('players');
-  playersDiv.innerHTML = "";
+  const count = document.getElementById('playerCount').value;
+  const container = document.getElementById('players');
+  container.innerHTML = "";
 
   for (let i = 1; i <= count; i++) {
     const input = document.createElement('input');
     input.placeholder = "Jugador " + i;
-    playersDiv.appendChild(input);
+    container.appendChild(input);
   }
 }
 
-function startReveal() {
+function startGame() {
   const inputs = document.querySelectorAll('#players input');
-  players = Array.from(inputs).map(i => i.value || i.placeholder);
+  players = [];
+
+  inputs.forEach((input, i) => {
+    players.push(input.value || `Jugador ${i + 1}`);
+  });
+
   current = 0;
   showReveal();
 }
 
 function showReveal() {
-  document.getElementById('config').classList.remove('active');
-  document.getElementById('reveal').classList.add('active');
+  showScreen('reveal');
   document.getElementById('playerName').innerText = players[current];
-  document.querySelector('.cover').style.display = "flex";
-  document.querySelector('.next-btn').style.display = "none";
+  document.querySelector('.cover').style.display = 'flex';
+  document.querySelector('.next-btn').style.display = 'none';
 }
 
-function reveal() {
-  document.querySelector('.cover').style.display = "none";
-  document.querySelector('.next-btn').style.display = "block";
+function revealWord() {
+  document.querySelector('.cover').style.display = 'none';
+  document.querySelector('.next-btn').style.display = 'block';
 }
 
 function nextPlayer() {
@@ -265,8 +212,14 @@ function nextPlayer() {
   if (current < players.length) {
     showReveal();
   } else {
-    alert("Todos vieron su palabra");
+    alert('Todos vieron su palabra');
+    showScreen('home');
   }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 </script>
 
