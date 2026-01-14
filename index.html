@@ -2,263 +2,228 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Impostor versión Argentina</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impostor versión Argentina</title>
 <style>
-body {
-  margin:0;
-  font-family: Arial, Helvetica, sans-serif;
-  background:#000;
-  color:#ccc;
-}
-.screen { display:none; min-height:100vh; padding:20px; box-sizing:border-box; text-align:center; }
-.screen.active { display:block; }
-h1 { margin:30px 0; color:#bbb; text-align:center; }
-.main-btn {
-  background: linear-gradient(135deg,#ff2a2a,#b80000);
-  color:#000;
-  font-size:36px;
-  font-weight:bold;
-  padding:50px 50px;
-  border-radius:30px;
-  cursor:pointer;
-  display:inline-block;
-  margin-top:80px;
-}
-.box { background:#111; padding:25px; border-radius:15px; margin:20px auto; max-width:420px; }
-select,input,button { width:100%; padding:12px; margin-top:15px; font-size:16px; border-radius:8px; border:none; }
-button { background:#ff2a2a; color:#000; font-weight:bold; cursor:pointer; }
+  body { margin:0; font-family: 'Arial', sans-serif; background:black; color:#ccc; }
+  .screen { display:none; padding:20px; text-align:center; }
+  .active { display:block; }
+  
+  /* Inicio */
+  #home h1 { color: #ccc; font-size:36px; margin-bottom:40px; }
+  #impostorBtn {
+    width:250px; height:80px; background: linear-gradient(to bottom, #ff4d4d, #cc0000);
+    color:black; font-size:28px; font-weight:bold; border:none; border-radius:20px;
+    cursor:pointer;
+    margin:auto; display:block;
+  }
 
-/* interruptor real */
-.switch { position:relative; width:50px; height:26px; }
-.switch input { display:none; }
-.slider { position:absolute; inset:0; background:#555; border-radius:20px; cursor:pointer; }
-.slider:before { content:""; position:absolute; height:20px; width:20px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.3s; }
-input:checked + .slider { background:#ff2a2a; }
-input:checked + .slider:before { transform:translateX(24px); }
+  /* Configuración */
+  #config select, #config input { margin:10px 0; padding:8px; font-size:16px; }
+  #clueToggle { margin-left:10px; transform: scale(1.5); }
 
-.toggle-row { display:flex; justify-content:space-between; align-items:center; margin-top:15px; }
+  /* Revelar palabra */
+  #revealBox {
+    position: relative; width:300px; height:200px; background:black; margin:40px auto;
+    border-radius:20px; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-direction:column;
+  }
+  #cover {
+    position:absolute; width:100%; height:100%; background:red; color:black;
+    display:flex; align-items:center; justify-content:center; font-weight:bold; cursor:grab; z-index:2;
+  }
+  #wordDisplay { color:grey; font-size:24px; text-align:center; z-index:1; }
 
-/* revelar */
-.reveal-box {
-  background:#000;
-  border:2px solid #333;
-  border-radius:20px;
-  height:200px;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  font-size:28px;
-  margin-top:30px;
-  user-select:none;
-  overflow:hidden;
-  position:relative;
-}
-.tapa {
-  background:#ff2a2a;
-  color:#000;
-  width:100%;
-  height:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:absolute;
-  top:0;
-  left:0;
-  border-radius:20px;
-  cursor:pointer;
-  font-weight:bold;
-  z-index:2;
-}
-.word-inner {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  z-index:1;
-}
-.impostor { color:red; font-size:34px; font-weight:bold; }
-.small { font-size:18px; margin-top:10px; color:#aaa; }
-.vote-btn { background:#222; color:#fff; margin-top:8px; padding:10px; font-size:16px; border-radius:8px; cursor:pointer; width:80%; }
+  /* Debate */
+  #playersVote button { display:block; margin:5px auto; padding:10px 20px; font-size:16px; cursor:pointer; }
 </style>
 </head>
 <body>
 
-<!-- HOME -->
+<!-- Pantalla de Inicio -->
 <div id="home" class="screen active">
   <h1>Impostor versión Argentina</h1>
-  <div class="main-btn" onclick="show('config')">IMPOSTOR</div>
+  <button id="impostorBtn" onclick="goConfig()">IMPOSTOR</button>
 </div>
 
-<!-- CONFIG -->
+<!-- Configuración -->
 <div id="config" class="screen">
-  <h1>Configurar partida</h1>
-  <div class="box">
-    <label>Cantidad de jugadores</label>
+  <h2>Configuración de la partida</h2>
+  <div>
+    <label>Cantidad de jugadores:</label>
     <select id="playersCount" onchange="updatePlayers()">
       <option value="3">3</option><option value="4">4</option><option value="5">5</option>
       <option value="6">6</option><option value="7">7</option><option value="8">8</option>
-      <option value="9">9</option><option value="10">10</option>
-      <option value="11">11</option><option value="12">12</option>
+      <option value="9">9</option><option value="10">10</option><option value="11">11</option>
+      <option value="12">12</option>
     </select>
-    <div id="playerInputs"></div>
-    <label>Cantidad de impostores</label>
+  </div>
+  <div id="playerInputs"></div>
+  <div>
+    <label>Cantidad de impostores:</label>
     <select id="impostorsCount">
       <option value="1">1</option><option value="2">2</option><option value="3">3</option>
     </select>
-    <label>Tiempo de debate</label>
-    <select id="timeCount">
+  </div>
+  <div>
+    <label>Tiempo de debate:</label>
+    <select id="debateTime">
       <option value="1">1 minuto</option><option value="2">2 minutos</option>
       <option value="3">3 minutos</option><option value="4">4 minutos</option>
       <option value="5">5 minutos</option><option value="6">6 minutos</option>
       <option value="7">7 minutos</option>
     </select>
-    <div class="toggle-row">
-      <span>Pista</span>
-      <label class="switch">
-        <input type="checkbox" id="clueToggle">
-        <span class="slider"></span>
-      </label>
-    </div>
-    <button onclick="startGame()">Nueva partida</button>
   </div>
+  <div>
+    <label>Pista:</label>
+    <input type="checkbox" id="clueToggle"> On/Off
+  </div>
+  <button onclick="startGame()">Nueva Partida</button>
 </div>
 
-<!-- REVELAR -->
+<!-- Revelar palabra -->
 <div id="reveal" class="screen">
-  <h1 id="playerName"></h1>
-  <div class="reveal-box" id="revealBox">
-    <div class="tapa" id="tapa">DESLIZAR</div>
-    <div class="word-inner" id="wordInner"></div>
+  <h2 id="playerName"></h2>
+  <div id="revealBox">
+    <div id="cover">DESLIZAR</div>
+    <div id="wordDisplay"></div>
   </div>
-  <button id="nextBtn" onclick="nextPlayer()" style="display:none;">Siguiente jugador</button>
+  <button id="nextBtn" onclick="next()">Siguiente jugador</button>
 </div>
 
-<!-- DEBATE -->
+<!-- Debate -->
 <div id="debate" class="screen">
-  <h1>Debate</h1>
-  <h2 id="timer"></h2>
-  <div id="votes"></div>
-  <button id="voteBtn" style="display:none;">Votar</button>
-  <button onclick="show('config')">Nueva partida</button>
+  <h2>Debate</h2>
+  <div id="playersVote"></div>
+  <button onclick="startVote()">Votar</button>
 </div>
 
 <script>
-const palabra = "ASADO";
-const categoria = "COMIDA";
-const pista = "DOMINGO";
+  // Lista de palabras ejemplo
+  const palabras = [
+    { palabra:"Asado", categoria:"Comida", pista:"DOMINGO" },
+    { palabra:"Mate", categoria:"Bebida", pista:"INFUSIÓN" },
+    { palabra:"Maradona", categoria:"Futbolista", pista:"PELO RIZADO" }
+  ];
 
-let players=[], impostors=[], current=0, timeLeft, timerInterval;
+  let palabra, categoria, pista;
+  let players = [];
+  let impostors = [];
+  let current = 0;
 
-function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
+  const playerName = document.getElementById("playerName");
+  const cover = document.getElementById("cover");
+  const wordDisplay = document.getElementById("wordDisplay");
 
-function updatePlayers(){
-  const count=playersCount.value;
-  playerInputs.innerHTML="";
-  for(let i=1;i<=count;i++){
-    const input=document.createElement("input");
-    input.placeholder="Jugador "+i;
-    playerInputs.appendChild(input);
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
   }
-}
 
-function startGame(){
-  players=[...playerInputs.querySelectorAll("input")].map((i,idx)=>i.value||"Jugador "+(idx+1));
-  impostors=[];
-  while(impostors.length<impostorsCount.value){
-    const r=Math.floor(Math.random()*players.length);
-    if(!impostors.includes(r)) impostors.push(r);
+  function goConfig() { show('config'); }
+
+  function updatePlayers() {
+    const count = parseInt(document.getElementById("playersCount").value);
+    const container = document.getElementById("playerInputs");
+    container.innerHTML = "";
+    for(let i=1;i<=count;i++){
+      const input = document.createElement("input");
+      input.placeholder="Jugador "+i;
+      container.appendChild(input);
+    }
   }
-  current=0;
-  showReveal();
-}
 
-// --- REVELAR ---
-const revealBox=document.getElementById("revealBox");
-const wordInner=document.getElementById("wordInner");
-const tapa=document.getElementById("tapa");
-const nextBtn=document.getElementById("nextBtn");
-let startY=0, currentY=0, isDragging=false;
+  function startGame() {
+    const total = parseInt(document.getElementById("playersCount").value);
+    const impCount = parseInt(document.getElementById("impostorsCount").value);
+    const clueOn = document.getElementById("clueToggle").checked;
 
-tapa.addEventListener("touchstart",e=>{isDragging=true; startY=e.touches[0].clientY;});
-tapa.addEventListener("touchmove",e=>{
-  if(!isDragging) return;
-  currentY=e.touches[0].clientY;
-  let diff=startY-currentY;
-  if(diff>0) {
-    tapa.style.transform=`translateY(${-Math.min(diff,200)}px)`;
-    wordInner.style.transform=`translateY(${-Math.min(diff,200)}px)`;
+    // Elegir palabra aleatoria
+    const rand = palabras[Math.floor(Math.random()*palabras.length)];
+    palabra = rand.palabra; categoria = rand.categoria; pista = rand.pista;
+
+    // Crear jugadores
+    players = [];
+    for(let i=1;i<=total;i++) players.push("Jugador "+i);
+
+    // Elegir impostores
+    impostors = [];
+    while(impostors.length < impCount){
+      let r = Math.floor(Math.random()*total);
+      if(!impostors.includes(r)) impostors.push(r);
+    }
+
+    current=0;
+    reveal();
   }
-});
-tapa.addEventListener("touchend",e=>{
-  isDragging=false;
-  tapa.style.transform="translateY(-200px)";
-  wordInner.style.transform="translateY(-200px)";
-  revealWord();
-});
 
-function showReveal(){
-  show("reveal");
-  playerName.innerText=players[current];
-  tapa.style.transform="translateY(0)";
-  wordInner.style.transform="translateY(0)";
-  tapa.style.display="flex";
-  wordInner.innerHTML="";
-  nextBtn.style.display="none";
-}
+  function reveal(){
+    show('reveal');
+    playerName.innerText = players[current];
+    wordDisplay.innerHTML = "";
 
-function revealWord(){
-  if(impostors.includes(current)){
-    wordInner.innerHTML=`<div class="impostor">¡IMPOSTOR!</div><div class="small">${clueToggle.checked?`(${pista})`:categoria}</div>`;
-  } else {
-    wordInner.innerText=palabra;
+    cover.style.top="0px"; cover.style.height="100%";
+
+    cover.onmousedown = startDrag;
   }
-  setTimeout(()=>{ nextBtn.style.display="block"; },200);
-}
 
-function nextPlayer(){
-  current++;
-  if(current<players.length) showReveal();
-  else startDebate();
-}
+  function startDrag(e){
+    const startY = e.clientY;
+    const coverHeight = cover.offsetHeight;
 
-// --- DEBATE ---
-function startDebate(){
-  show("debate");
-  votes.innerHTML="";
-  const voteBtn=document.getElementById("voteBtn");
-  voteBtn.style.display="block";
-  voteBtn.onclick=()=>alert("Aquí se registraría tu voto.");
-  players.forEach(p=>{
-    const b=document.createElement("button");
-    b.className="vote-btn";
-    b.innerText=p;
-    votes.appendChild(b);
-  });
-  // cronómetro
-  timeLeft=parseInt(timeCount.value)*60;
-  updateTimer();
-  clearInterval(timerInterval);
-  timerInterval=setInterval(()=>{
-    timeLeft--;
-    updateTimer();
-    if(timeLeft<=0) clearInterval(timerInterval);
-  },1000);
-}
+    function onMouseMove(ev){
+      let diff = startY-ev.clientY;
+      let newHeight = Math.max(0, coverHeight-diff);
+      cover.style.height=newHeight+"px";
+      // Mostrar palabra mientras desliza
+      if(impostors.includes(current)){
+        const clueOn = document.getElementById("clueToggle").checked;
+        if(clueOn) wordDisplay.innerHTML='<span style="color:red;font-weight:bold;">¡IMPOSTOR!</span><br><span style="font-size:18px;">'+pista+'</span>';
+        else wordDisplay.innerHTML='<span style="color:red;font-weight:bold;">¡IMPOSTOR!</span>';
+      } else {
+        wordDisplay.innerText=palabra;
+      }
+    }
 
-function updateTimer(){
-  const m=Math.floor(timeLeft/60);
-  const s=timeLeft%60;
-  timer.innerText=`${m}:${s.toString().padStart(2,"0")}`;
-}
+    function onMouseUp(){
+      document.removeEventListener("mousemove",onMouseMove);
+      document.removeEventListener("mouseup",onMouseUp);
+    }
+
+    document.addEventListener("mousemove",onMouseMove);
+    document.addEventListener("mouseup",onMouseUp);
+  }
+
+  function next(){
+    current++;
+    if(current<players.length) reveal();
+    else startDebate();
+  }
+
+  function startDebate(){
+    show('debate');
+    const container = document.getElementById("playersVote");
+    container.innerHTML="";
+    players.forEach(p=>{
+      const btn=document.createElement("button");
+      btn.innerText=p;
+      btn.onclick=()=>alert("Votaste a "+p);
+      container.appendChild(btn);
+    });
+    startTimer(parseInt(document.getElementById("debateTime").value)*60);
+  }
+
+  function startVote(){
+    alert("Aquí se implementaría la lógica de votación real.");
+  }
+
+  function startTimer(seconds){
+    let timeLeft = seconds;
+    const interval=setInterval(()=>{
+      console.log(timeLeft);
+      timeLeft--;
+      if(timeLeft<0) clearInterval(interval);
+    },1000);
+  }
 </script>
 </body>
 </html>
