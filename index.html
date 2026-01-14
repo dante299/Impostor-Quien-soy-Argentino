@@ -8,19 +8,20 @@
   body { margin:0; font-family: 'Arial', sans-serif; background:black; color:#ccc; }
   .screen { display:none; padding:20px; text-align:center; }
   .active { display:block; }
-  
+
   /* Inicio */
-  #home h1 { color: #ccc; font-size:36px; margin-bottom:40px; }
+  #home h1 { color: #ccc; font-size:36px; margin-bottom:60px; text-align:center; }
   #impostorBtn {
-    width:250px; height:80px; background: linear-gradient(to bottom, #ff4d4d, #cc0000);
+    width:250px; height:100px; background: linear-gradient(to bottom, #ff4d4d, #cc0000);
     color:black; font-size:28px; font-weight:bold; border:none; border-radius:20px;
-    cursor:pointer;
-    margin:auto; display:block;
+    cursor:pointer; margin:auto; display:block;
+    line-height:100px;
   }
 
   /* Configuración */
-  #config select, #config input { margin:10px 0; padding:8px; font-size:16px; }
-  #clueToggle { margin-left:10px; transform: scale(1.5); }
+  #config select, #config input { margin:10px 0; padding:8px; font-size:16px; width:200px; }
+  #playerInputs input { display:block; margin:5px auto; }
+  #clueToggle { transform: scale(1.5); margin-left:10px; }
 
   /* Revelar palabra */
   #revealBox {
@@ -98,7 +99,6 @@
 </div>
 
 <script>
-  // Lista de palabras ejemplo
   const palabras = [
     { palabra:"Asado", categoria:"Comida", pista:"DOMINGO" },
     { palabra:"Mate", categoria:"Bebida", pista:"INFUSIÓN" },
@@ -124,31 +124,30 @@
   function updatePlayers() {
     const count = parseInt(document.getElementById("playersCount").value);
     const container = document.getElementById("playerInputs");
-    container.innerHTML = "";
+    container.innerHTML="";
     for(let i=1;i<=count;i++){
-      const input = document.createElement("input");
+      const input=document.createElement("input");
       input.placeholder="Jugador "+i;
       container.appendChild(input);
     }
   }
 
-  function startGame() {
+  function startGame(){
     const total = parseInt(document.getElementById("playersCount").value);
     const impCount = parseInt(document.getElementById("impostorsCount").value);
-    const clueOn = document.getElementById("clueToggle").checked;
 
     // Elegir palabra aleatoria
     const rand = palabras[Math.floor(Math.random()*palabras.length)];
     palabra = rand.palabra; categoria = rand.categoria; pista = rand.pista;
 
     // Crear jugadores
-    players = [];
+    players=[];
     for(let i=1;i<=total;i++) players.push("Jugador "+i);
 
     // Elegir impostores
-    impostors = [];
-    while(impostors.length < impCount){
-      let r = Math.floor(Math.random()*total);
+    impostors=[];
+    while(impostors.length<impCount){
+      const r=Math.floor(Math.random()*total);
       if(!impostors.includes(r)) impostors.push(r);
     }
 
@@ -162,21 +161,24 @@
     wordDisplay.innerHTML = "";
 
     cover.style.top="0px"; cover.style.height="100%";
+    cover.innerText="DESLIZAR";
 
-    cover.onmousedown = startDrag;
+    cover.onmousedown=startDrag;
   }
 
   function startDrag(e){
+    e.preventDefault();
     const startY = e.clientY;
-    const coverHeight = cover.offsetHeight;
+    const startHeight = cover.offsetHeight;
 
     function onMouseMove(ev){
-      let diff = startY-ev.clientY;
-      let newHeight = Math.max(0, coverHeight-diff);
+      let diff=startY-ev.clientY;
+      let newHeight=Math.max(0,startHeight-diff);
       cover.style.height=newHeight+"px";
+
       // Mostrar palabra mientras desliza
       if(impostors.includes(current)){
-        const clueOn = document.getElementById("clueToggle").checked;
+        const clueOn=document.getElementById("clueToggle").checked;
         if(clueOn) wordDisplay.innerHTML='<span style="color:red;font-weight:bold;">¡IMPOSTOR!</span><br><span style="font-size:18px;">'+pista+'</span>';
         else wordDisplay.innerHTML='<span style="color:red;font-weight:bold;">¡IMPOSTOR!</span>';
       } else {
@@ -201,7 +203,7 @@
 
   function startDebate(){
     show('debate');
-    const container = document.getElementById("playersVote");
+    const container=document.getElementById("playersVote");
     container.innerHTML="";
     players.forEach(p=>{
       const btn=document.createElement("button");
@@ -213,11 +215,11 @@
   }
 
   function startVote(){
-    alert("Aquí se implementaría la lógica de votación real.");
+    alert("Aquí se implementaría la votación real.");
   }
 
   function startTimer(seconds){
-    let timeLeft = seconds;
+    let timeLeft=seconds;
     const interval=setInterval(()=>{
       console.log(timeLeft);
       timeLeft--;
