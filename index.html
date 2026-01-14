@@ -3,229 +3,321 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Impostor versión Argentina</title>
+<title>El Impostor Argentino</title>
 <style>
-  body { margin:0; font-family: 'Arial', sans-serif; background:black; color:#ccc; }
-  .screen { display:none; padding:20px; text-align:center; }
-  .active { display:block; }
+  /* Tipografía principal */
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
-  /* Inicio */
-  #home h1 { color: #ccc; font-size:36px; margin-bottom:60px; text-align:center; }
-  #impostorBtn {
-    width:250px; height:100px; background: linear-gradient(to bottom, #ff4d4d, #cc0000);
-    color:black; font-size:28px; font-weight:bold; border:none; border-radius:20px;
-    cursor:pointer; margin:auto; display:block;
-    line-height:100px;
+  body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    margin-top: 40px;
+    font-size: 3rem;
+    color: #fff;
+  }
+
+  /* Cuadros grandes */
+  .cuadro {
+    width: 250px;
+    height: 150px;
+    border-radius: 25px;
+    margin: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.8rem;
+    font-weight: bold;
+    transition: transform 0.2s;
+    background: linear-gradient(135deg, #ff4d4d, #cc0000);
+    color: #000;
+  }
+
+  .cuadro:hover {
+    transform: scale(1.05);
   }
 
   /* Configuración */
-  #config select, #config input { margin:10px 0; padding:8px; font-size:16px; width:200px; }
-  #playerInputs input { display:block; margin:5px auto; }
-  #clueToggle { transform: scale(1.5); margin-left:10px; }
-
-  /* Revelar palabra */
-  #revealBox {
-    position: relative; width:300px; height:200px; background:black; margin:40px auto;
-    border-radius:20px; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-direction:column;
+  .configuracion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
   }
-  #cover {
-    position:absolute; width:100%; height:100%; background:red; color:black;
-    display:flex; align-items:center; justify-content:center; font-weight:bold; cursor:grab; z-index:2;
-  }
-  #wordDisplay { color:grey; font-size:24px; text-align:center; z-index:1; }
 
-  /* Debate */
-  #playersVote button { display:block; margin:5px auto; padding:10px 20px; font-size:16px; cursor:pointer; }
+  .config-item {
+    margin: 10px 0;
+    color: #fff;
+  }
+
+  .config-item label {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+
+  input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+  }
+
+  .toggle {
+    width: 50px;
+    height: 25px;
+    background: #555;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .toggle::before {
+    content: '';
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    background: #ff4d4d;
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+    transition: left 0.2s;
+  }
+
+  .toggle.active::before {
+    left: 26px;
+  }
+
+  /* Botones */
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    background-color: #ff4d4d;
+    color: #000;
+    font-weight: bold;
+  }
+
+  /* Casillas de jugadores */
+  .jugadores-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .jugador-input {
+    margin: 5px;
+    padding: 5px;
+    width: 120px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+  }
+
+  /* Pantalla de revelado */
+  .revelar-cuadro {
+    width: 300px;
+    height: 150px;
+    border-radius: 25px;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #cc0000;
+    color: #000;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+
+  .nombres-jugadores {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    color: #fff;
+  }
+
+  .nombre-jugador {
+    margin: 5px 10px;
+    padding: 5px 10px;
+    background-color: #555;
+    border-radius: 10px;
+  }
+
+  .cronometro {
+    font-size: 2rem;
+    margin-top: 20px;
+    color: #ff4d4d;
+  }
 </style>
 </head>
 <body>
 
-<!-- Pantalla de Inicio -->
-<div id="home" class="screen active">
-  <h1>Impostor versión Argentina</h1>
-  <button id="impostorBtn" onclick="goConfig()">IMPOSTOR</button>
+<!-- Pantalla principal -->
+<div id="pantalla-inicio">
+  <h1>Juegos Argentinos</h1>
+  <div class="cuadro" onclick="mostrarConfiguracion()">El Impostor</div>
+  <div class="cuadro" onclick="alert('Quién Soy todavía no implementado')">¿Quién Soy?</div>
 </div>
 
-<!-- Configuración -->
-<div id="config" class="screen">
-  <h2>Configuración de la partida</h2>
-  <div>
-    <label>Cantidad de jugadores:</label>
-    <select id="playersCount" onchange="updatePlayers()">
-      <option value="3">3</option><option value="4">4</option><option value="5">5</option>
-      <option value="6">6</option><option value="7">7</option><option value="8">8</option>
-      <option value="9">9</option><option value="10">10</option><option value="11">11</option>
-      <option value="12">12</option>
-    </select>
+<!-- Pantalla de configuración -->
+<div id="pantalla-configuracion" style="display:none;">
+  <h1>Configuración - El Impostor</h1>
+  <div class="configuracion">
+    <div class="config-item">
+      <label>Cantidad de jugadores:</label>
+      <input type="number" id="num-jugadores" min="3" max="12" value="4" onchange="crearInputsJugadores()">
+    </div>
+    <div class="config-item">
+      <label>Cantidad de impostores:</label>
+      <input type="number" id="num-impostores" min="1" max="3" value="1">
+    </div>
+    <div class="config-item">
+      <label>Tiempo de debate (minutos):</label>
+      <input type="number" id="tiempo-debate" min="1" max="7" value="3">
+    </div>
+    <div class="config-item">
+      <label>Pista:</label>
+      <div class="toggle" id="toggle-pista" onclick="this.classList.toggle('active')"></div>
+    </div>
+    <div class="jugadores-container" id="jugadores-container"></div>
+    <button onclick="iniciarPartida()">Nueva partida</button>
   </div>
-  <div id="playerInputs"></div>
-  <div>
-    <label>Cantidad de impostores:</label>
-    <select id="impostorsCount">
-      <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-    </select>
-  </div>
-  <div>
-    <label>Tiempo de debate:</label>
-    <select id="debateTime">
-      <option value="1">1 minuto</option><option value="2">2 minutos</option>
-      <option value="3">3 minutos</option><option value="4">4 minutos</option>
-      <option value="5">5 minutos</option><option value="6">6 minutos</option>
-      <option value="7">7 minutos</option>
-    </select>
-  </div>
-  <div>
-    <label>Pista:</label>
-    <input type="checkbox" id="clueToggle"> On/Off
-  </div>
-  <button onclick="startGame()">Nueva Partida</button>
 </div>
 
-<!-- Revelar palabra -->
-<div id="reveal" class="screen">
-  <h2 id="playerName"></h2>
-  <div id="revealBox">
-    <div id="cover">DESLIZAR</div>
-    <div id="wordDisplay"></div>
-  </div>
-  <button id="nextBtn" onclick="next()">Siguiente jugador</button>
-</div>
-
-<!-- Debate -->
-<div id="debate" class="screen">
-  <h2>Debate</h2>
-  <div id="playersVote"></div>
-  <button onclick="startVote()">Votar</button>
+<!-- Pantalla de revelado -->
+<div id="pantalla-revelado" style="display:none;">
+  <h1>Revelar palabra</h1>
+  <div class="revelar-cuadro" onclick="revelarJugador()">Tocar para revelar</div>
+  <div class="cronometro" id="cronometro"></div>
+  <div class="nombres-jugadores" id="lista-nombres"></div>
+  <button onclick="votarJugador()">Votar</button>
+  <button onclick="reiniciarJuego()">Nueva partida</button>
 </div>
 
 <script>
-  const palabras = [
-    { palabra:"Asado", categoria:"Comida", pista:"DOMINGO" },
-    { palabra:"Mate", categoria:"Bebida", pista:"INFUSIÓN" },
-    { palabra:"Maradona", categoria:"Futbolista", pista:"PELO RIZADO" }
-  ];
+let jugadores = [];
+let roles = [];
+let turno = 0;
+let pistasActiva = false;
+let tiempoDebate = 0;
+let cronometroInterval;
 
-  let palabra, categoria, pista;
-  let players = [];
-  let impostors = [];
-  let current = 0;
+function mostrarConfiguracion() {
+  document.getElementById('pantalla-inicio').style.display = 'none';
+  document.getElementById('pantalla-configuracion').style.display = 'block';
+  crearInputsJugadores();
+}
 
-  const playerName = document.getElementById("playerName");
-  const cover = document.getElementById("cover");
-  const wordDisplay = document.getElementById("wordDisplay");
-
-  function show(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+function crearInputsJugadores() {
+  const container = document.getElementById('jugadores-container');
+  container.innerHTML = '';
+  const num = parseInt(document.getElementById('num-jugadores').value);
+  for(let i=0;i<num;i++){
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Jugador ' + (i+1);
+    input.className = 'jugador-input';
+    container.appendChild(input);
   }
+}
 
-  function goConfig() { show('config'); }
+function iniciarPartida() {
+  const numJugadores = parseInt(document.getElementById('num-jugadores').value);
+  const numImpostores = parseInt(document.getElementById('num-impostores').value);
+  tiempoDebate = parseInt(document.getElementById('tiempo-debate').value);
+  pistasActiva = document.getElementById('toggle-pista').classList.contains('active');
 
-  function updatePlayers() {
-    const count = parseInt(document.getElementById("playersCount").value);
-    const container = document.getElementById("playerInputs");
-    container.innerHTML="";
-    for(let i=1;i<=count;i++){
-      const input=document.createElement("input");
-      input.placeholder="Jugador "+i;
-      container.appendChild(input);
-    }
+  jugadores = [];
+  roles = [];
+
+  const inputs = document.querySelectorAll('.jugador-input');
+  inputs.forEach(input => jugadores.push(input.value || 'Jugador'));
+
+  // Asignar roles
+  roles = Array(numImpostores).fill('Impostor').concat(Array(numJugadores - numImpostores).fill('Ciudadano'));
+  // Mezclar
+  roles.sort(() => Math.random() - 0.5);
+
+  // Mostrar pantalla de revelado
+  document.getElementById('pantalla-configuracion').style.display = 'none';
+  document.getElementById('pantalla-revelado').style.display = 'block';
+  turno = 0;
+  actualizarListaNombres();
+  document.querySelector('.revelar-cuadro').textContent = 'Tocar para revelar';
+}
+
+function revelarJugador() {
+  if(turno >= jugadores.length) return;
+
+  const cuadro = document.querySelector('.revelar-cuadro');
+  let texto = roles[turno];
+  if(roles[turno] === 'Ciudadano') {
+    texto = 'Palabra: ' + generarPalabra(); // función simple para ejemplo
+    if(pistasActiva) texto += ' (Pista activada)';
   }
+  cuadro.textContent = texto;
+  turno++;
 
-  function startGame(){
-    const total = parseInt(document.getElementById("playersCount").value);
-    const impCount = parseInt(document.getElementById("impostorsCount").value);
-
-    // Elegir palabra aleatoria
-    const rand = palabras[Math.floor(Math.random()*palabras.length)];
-    palabra = rand.palabra; categoria = rand.categoria; pista = rand.pista;
-
-    // Crear jugadores
-    players=[];
-    for(let i=1;i<=total;i++) players.push("Jugador "+i);
-
-    // Elegir impostores
-    impostors=[];
-    while(impostors.length<impCount){
-      const r=Math.floor(Math.random()*total);
-      if(!impostors.includes(r)) impostors.push(r);
-    }
-
-    current=0;
-    reveal();
+  if(turno === jugadores.length) {
+    // activar cronómetro
+    iniciarCronometro();
+    cuadro.style.display = 'none';
   }
+}
 
-  function reveal(){
-    show('reveal');
-    playerName.innerText = players[current];
-    wordDisplay.innerHTML = "";
+function generarPalabra() {
+  // Palabras de ejemplo
+  const palabras = ['Asado', 'Mate', 'Banderita', 'Fútbol', 'Dulce de leche'];
+  return palabras[Math.floor(Math.random()*palabras.length)];
+}
 
-    cover.style.top="0px"; cover.style.height="100%";
-    cover.innerText="DESLIZAR";
+function actualizarListaNombres() {
+  const lista = document.getElementById('lista-nombres');
+  lista.innerHTML = '';
+  jugadores.forEach((nombre,i)=>{
+    const div = document.createElement('div');
+    div.className = 'nombre-jugador';
+    div.textContent = nombre;
+    lista.appendChild(div);
+  });
+}
 
-    cover.onmousedown=startDrag;
-  }
+function iniciarCronometro() {
+  let tiempo = tiempoDebate * 60;
+  const display = document.getElementById('cronometro');
+  cronometroInterval = setInterval(()=>{
+    let min = Math.floor(tiempo/60);
+    let seg = tiempo % 60;
+    display.textContent = min+':' + (seg<10?'0':'')+seg;
+    tiempo--;
+    if(tiempo<0) clearInterval(cronometroInterval);
+  },1000);
+}
 
-  function startDrag(e){
-    e.preventDefault();
-    const startY = e.clientY;
-    const startHeight = cover.offsetHeight;
+function votarJugador() {
+  let elegido = prompt('Elegí un jugador para votar (escribí el nombre exacto)');
+  if(!jugadores.includes(elegido)) return alert('Jugador inválido');
+  const index = jugadores.indexOf(elegido);
+  if(roles[index]==='Impostor') alert(elegido + ' era el impostor!');
+  else alert(elegido + ' es un ciudadano, sigue la partida');
+}
 
-    function onMouseMove(ev){
-      let diff=startY-ev.clientY;
-      let newHeight=Math.max(0,startHeight-diff);
-      cover.style.height=newHeight+"px";
-
-      // Mostrar palabra mientras desliza
-      if(impostors.includes(current)){
-        const clueOn=document.getElementById("clueToggle").checked;
-        if(clueOn) wordDisplay.innerHTML='<span style="color:red;font-weight:bold;">¡IMPOSTOR!</span><br><span style="font-size:18px;">'+pista+'</span>';
-        else wordDisplay.innerHTML='<span style="color:red;font-weight:bold;">¡IMPOSTOR!</span>';
-      } else {
-        wordDisplay.innerText=palabra;
-      }
-    }
-
-    function onMouseUp(){
-      document.removeEventListener("mousemove",onMouseMove);
-      document.removeEventListener("mouseup",onMouseUp);
-    }
-
-    document.addEventListener("mousemove",onMouseMove);
-    document.addEventListener("mouseup",onMouseUp);
-  }
-
-  function next(){
-    current++;
-    if(current<players.length) reveal();
-    else startDebate();
-  }
-
-  function startDebate(){
-    show('debate');
-    const container=document.getElementById("playersVote");
-    container.innerHTML="";
-    players.forEach(p=>{
-      const btn=document.createElement("button");
-      btn.innerText=p;
-      btn.onclick=()=>alert("Votaste a "+p);
-      container.appendChild(btn);
-    });
-    startTimer(parseInt(document.getElementById("debateTime").value)*60);
-  }
-
-  function startVote(){
-    alert("Aquí se implementaría la votación real.");
-  }
-
-  function startTimer(seconds){
-    let timeLeft=seconds;
-    const interval=setInterval(()=>{
-      console.log(timeLeft);
-      timeLeft--;
-      if(timeLeft<0) clearInterval(interval);
-    },1000);
-  }
+function reiniciarJuego() {
+  location.reload();
+}
 </script>
 </body>
 </html>
