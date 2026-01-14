@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>El Impostor Argentino</title>
-<!-- Tipografía estética -->
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<!-- Tipografía moderna y estética -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 <style>
+  /* Estilos generales */
   body {
     margin: 0;
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Orbitron', sans-serif;
     background-color: #000;
     color: #fff;
     display: flex;
@@ -21,28 +22,30 @@
     margin-top: 40px;
     font-size: 3rem;
     text-align: center;
-    color: #fff;
   }
 
+  /* Cuadros grandes y estéticos */
   .cuadro {
-    width: 250px;
-    height: 150px;
-    border-radius: 25px;
-    margin: 40px;
+    width: 280px;
+    height: 160px;
+    border-radius: 30px;
+    margin: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
-    transition: transform 0.2s;
+    text-align: center;
     background: linear-gradient(135deg, #ff4d4d, #cc0000);
     color: #000;
-    text-align: center;
+    box-shadow: 0 0 20px #ff4d4d;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
 
   .cuadro:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 30px #ff1a1a;
   }
 
   /* Configuración */
@@ -54,37 +57,36 @@
   }
 
   .config-item {
-    margin: 10px 0;
-    color: #fff;
+    margin: 15px 0;
     display: flex;
     align-items: center;
+    font-size: 1.4rem;
   }
 
-  .config-item label {
-    margin-right: 10px;
+  select, input.jugador-input {
+    padding: 10px;
     font-size: 1.2rem;
-  }
-
-  select {
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+    margin-left: 10px;
+    text-align: center;
   }
 
   .toggle {
-    width: 50px;
-    height: 25px;
+    width: 60px;
+    height: 30px;
     background: #555;
-    border-radius: 25px;
+    border-radius: 30px;
     position: relative;
     cursor: pointer;
+    margin-left: 10px;
   }
 
   .toggle::before {
     content: '';
     position: absolute;
-    width: 23px;
-    height: 23px;
+    width: 28px;
+    height: 28px;
     background: #ff4d4d;
     border-radius: 50%;
     top: 1px;
@@ -93,19 +95,26 @@
   }
 
   .toggle.active::before {
-    left: 26px;
+    left: 31px;
   }
 
   button {
     margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    border-radius: 15px;
+    padding: 15px 25px;
+    font-size: 1.5rem;
+    border-radius: 20px;
     border: none;
     cursor: pointer;
     background-color: #ff4d4d;
     color: #000;
     font-weight: bold;
+    box-shadow: 0 0 15px #ff4d4d;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #ff1a1a;
   }
 
   .jugadores-container {
@@ -116,27 +125,30 @@
   }
 
   .jugador-input {
+    width: 150px;
     margin: 5px;
-    padding: 5px;
-    width: 120px;
-    border-radius: 5px;
-    border: none;
-    text-align: center;
   }
 
   /* Revelado */
   .revelar-cuadro {
-    width: 300px;
-    height: 150px;
-    border-radius: 25px;
+    width: 320px;
+    height: 180px;
+    border-radius: 30px;
     margin: 50px auto;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #cc0000;
     color: #000;
-    font-size: 2rem;
+    font-size: 2.2rem;
     cursor: pointer;
+    box-shadow: 0 0 20px #ff4d4d;
+    text-align: center;
+  }
+
+  #boton-siguiente {
+    margin-top: 20px;
+    display: none;
   }
 
   .nombres-jugadores {
@@ -144,14 +156,14 @@
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 20px;
-    color: #fff;
   }
 
   .nombre-jugador {
     margin: 5px 10px;
-    padding: 5px 10px;
+    padding: 8px 15px;
     background-color: #555;
-    border-radius: 10px;
+    border-radius: 15px;
+    font-size: 1.2rem;
   }
 
   .cronometro {
@@ -170,14 +182,13 @@
   <div class="cuadro" onclick="alert('Quién Soy todavía no implementado')">¿Quién Soy?</div>
 </div>
 
-<!-- Pantalla de configuración -->
+<!-- Configuración -->
 <div id="pantalla-configuracion" style="display:none;">
   <h1>Configuración - El Impostor</h1>
   <div class="configuracion">
     <div class="config-item">
       <label>Cantidad de jugadores:</label>
       <select id="num-jugadores" onchange="crearInputsJugadores()">
-        <!-- Opciones predefinidas -->
         <option value="3">3</option>
         <option value="4" selected>4</option>
         <option value="5">5</option>
@@ -199,7 +210,7 @@
       </select>
     </div>
     <div class="config-item">
-      <label>Tiempo de debate (minutos):</label>
+      <label>Tiempo de debate:</label>
       <select id="tiempo-debate">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -219,30 +230,20 @@
   </div>
 </div>
 
-<!-- Pantalla de revelado -->
+<!-- Revelado -->
 <div id="pantalla-revelado" style="display:none;">
   <h1>Revelar palabra</h1>
   <div class="revelar-cuadro" onclick="revelarJugador()">Tocar para revelar</div>
-  <button id="boton-siguiente" style="display:none;" onclick="siguienteJugador()">Siguiente jugador</button>
-</div>
-
-<!-- Pantalla de juego activo -->
-<div id="pantalla-juego" style="display:none;">
-  <h1>Juego en acción</h1>
-  <div class="cronometro" id="cronometro"></div>
-  <div class="nombres-jugadores" id="lista-nombres"></div>
-  <button onclick="votarJugador()">Votar</button>
-  <button onclick="reiniciarJuego()">Nueva partida</button>
+  <button id="boton-siguiente" onclick="siguienteJugador()">Siguiente jugador</button>
 </div>
 
 <script>
 let jugadores = [];
 let roles = [];
-let palabras = ['Asado','Mate','Banderita','Fútbol','Dulce de leche'];
+let palabras = ['Asado','Mate','Banderita','Fútbol','Dulce de leche','Empanada','Choripán','Dulce','Medialuna'];
 let turno = 0;
 let pistasActiva = false;
 let tiempoDebate = 0;
-let cronometroInterval;
 
 function mostrarConfiguracion(){
   document.getElementById('pantalla-inicio').style.display='none';
@@ -251,9 +252,9 @@ function mostrarConfiguracion(){
 }
 
 function crearInputsJugadores(){
-  const container = document.getElementById('jugadores-container');
+  const container=document.getElementById('jugadores-container');
   container.innerHTML='';
-  const num = parseInt(document.getElementById('num-jugadores').value);
+  const num=parseInt(document.getElementById('num-jugadores').value);
   for(let i=0;i<num;i++){
     const input=document.createElement('input');
     input.type='text';
@@ -289,72 +290,27 @@ function iniciarPartida(){
 function revelarJugador(){
   if(turno>=jugadores.length) return;
   const cuadro=document.querySelector('.revelar-cuadro');
-  let texto='';
   if(roles[turno]==='Ciudadano'){
-    texto='Palabra: '+palabras[Math.floor(Math.random()*palabras.length)];
-    if(pistasActiva) texto+=' (Pista activada)';
+    cuadro.textContent=palabras[Math.floor(Math.random()*palabras.length)];
   } else {
-    texto='Pista: '+palabras[Math.floor(Math.random()*palabras.length)].slice(0,3)+'...';
+    cuadro.textContent='Impostor\nPista: '+palabras[Math.floor(Math.random()*palabras.length)].slice(0,3)+'...';
   }
-  cuadro.textContent=texto;
-  if(turno===jugadores.length-1){
-    document.getElementById('boton-siguiente').style.display='block';
-  }
+  document.getElementById('boton-siguiente').style.display='block';
 }
 
 function siguienteJugador(){
   turno++;
   if(turno>=jugadores.length){
-    // último jugador ya revelado, iniciar juego
+    alert('Último jugador revelado. Empieza la partida.');
     document.getElementById('pantalla-revelado').style.display='none';
-    iniciarJuego();
+    // Aquí se puede iniciar la pantalla del juego con cronómetro
     return;
   }
   const cuadro=document.querySelector('.revelar-cuadro');
   cuadro.textContent='Tocar para revelar';
   document.getElementById('boton-siguiente').style.display='none';
 }
-
-function iniciarJuego(){
-  document.getElementById('pantalla-juego').style.display='block';
-  actualizarListaNombres();
-  iniciarCronometro();
-}
-
-function actualizarListaNombres(){
-  const lista=document.getElementById('lista-nombres');
-  lista.innerHTML='';
-  jugadores.forEach(nombre=>{
-    const div=document.createElement('div');
-    div.className='nombre-jugador';
-    div.textContent=nombre;
-    lista.appendChild(div);
-  });
-}
-
-function iniciarCronometro(){
-  let tiempo=tiempoDebate*60;
-  const display=document.getElementById('cronometro');
-  cronometroInterval=setInterval(()=>{
-    let min=Math.floor(tiempo/60);
-    let seg=tiempo%60;
-    display.textContent=min+':' + (seg<10?'0':'')+seg;
-    tiempo--;
-    if(tiempo<0) clearInterval(cronometroInterval);
-  },1000);
-}
-
-function votarJugador(){
-  let elegido=prompt('Elegí un jugador para votar (escribí el nombre exacto)');
-  if(!jugadores.includes(elegido)) return alert('Jugador inválido');
-  const index=jugadores.indexOf(elegido);
-  if(roles[index]==='Impostor') alert(elegido+' era el impostor!');
-  else alert(elegido+' es un ciudadano, sigue la partida');
-}
-
-function reiniciarJuego(){
-  location.reload();
-}
 </script>
+
 </body>
 </html>
