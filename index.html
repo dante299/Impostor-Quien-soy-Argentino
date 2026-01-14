@@ -120,23 +120,29 @@ select,input.jugador-input {
   left:31px;
 }
 
-button {
-  margin-top:20px;
-  padding:15px 25px;
-  font-size:1.5rem;
-  border-radius:20px;
-  border:none;
-  cursor:pointer;
+/* Botón empezar partida centrado y más chico */
+#boton-iniciar {
+  margin-top:15px;
+  padding:12px 20px;
+  font-size:1.3rem;
+  border-radius:15px;
   background-color:#ff4d4d;
   color:#000;
   font-weight:bold;
-  box-shadow:0 0 15px #ff4d4d;
+  box-shadow:0 0 10px #ff4d4d;
+  cursor:pointer;
   transition:transform 0.2s,box-shadow 0.2s;
+  align-self:flex-start;  /* mover un poco a la derecha */
+  margin-left:40%;        /* ajusta posición horizontal */
 }
 
-button:hover {
+#boton-iniciar:hover {
   transform:scale(1.05);
-  box-shadow:0 0 25px #ff1a1a;
+  box-shadow:0 0 20px #ff1a1a;
+}
+
+button {
+  cursor:pointer;
 }
 
 .jugadores-container {
@@ -150,11 +156,6 @@ button:hover {
   width:150px;
   margin:5px;
   text-align:center;
-}
-
-/* Centrar botón empezar partida */
-#boton-iniciar {
-  align-self:center;
 }
 
 /* ---------- Revelado ---------- */
@@ -390,11 +391,9 @@ function iniciarPartida(){
   const inputs=document.querySelectorAll('.jugador-input');
   inputs.forEach(input=>jugadores.push(input.value || 'Jugador'));
 
-  // Asignar roles
   roles=Array(numImpostores).fill('Impostor').concat(Array(numJugadores-numImpostores).fill('Ciudadano'));
   roles.sort(()=>Math.random()-0.5);
 
-  // Seleccionar palabra aleatoria según categoría
   const palabras=palabrasPorCategoria[categoria];
   palabraActual=palabras[Math.floor(Math.random()*palabras.length)];
   pistaActual=pistasPorPalabra[palabraActual] || 'Pista';
@@ -481,4 +480,4 @@ function reiniciarJuego(){
 }
 </script>
 </body>
-  </html>
+          </html>
