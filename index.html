@@ -6,6 +6,7 @@
 <title>El Impostor Argentino</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 <style>
+/* ---------- General ---------- */
 body {
   margin:0;
   font-family:'Montserrat', sans-serif;
@@ -18,7 +19,7 @@ body {
   height:100vh;
 }
 
-/* Pantalla principal */
+/* ---------- Pantalla Inicio ---------- */
 #pantalla-inicio {
   display:flex;
   flex-direction:column;
@@ -57,12 +58,17 @@ h1 {
   box-shadow:0 0 30px #ff1a1a;
 }
 
-/* Configuración */
-.configuracion {
+/* ---------- Configuración ---------- */
+#pantalla-configuracion {
+  background:#111;
+  width:90%;
+  max-width:600px;
+  padding:30px;
+  border-radius:30px;
+  box-shadow:0 0 30px #ff4d4d;
   display:flex;
   flex-direction:column;
   align-items:center;
-  margin-top:30px;
 }
 
 .config-item {
@@ -73,6 +79,8 @@ h1 {
   background:#222;
   padding:10px 20px;
   border-radius:15px;
+  width:100%;
+  justify-content:space-between;
 }
 
 .config-item label {
@@ -85,7 +93,6 @@ select,input.jugador-input {
   border-radius:10px;
   border:none;
   text-align:center;
-  margin-left:10px;
 }
 
 .toggle {
@@ -95,7 +102,6 @@ select,input.jugador-input {
   border-radius:30px;
   position:relative;
   cursor:pointer;
-  margin-left:10px;
 }
 
 .toggle::before {
@@ -145,12 +151,32 @@ button:hover {
   margin:5px;
 }
 
-/* Revelado */
+/* ---------- Revelado ---------- */
+#pantalla-revelado {
+  background:#111;
+  width:90%;
+  max-width:500px;
+  padding:30px;
+  border-radius:30px;
+  box-shadow:0 0 30px #ff4d4d;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+#nombre-jugador {
+  font-size:2rem;
+  margin-bottom:20px;
+  text-align:center;
+  color:#ffcc00;
+  font-weight:bold;
+}
+
 .revelar-cuadro {
   width:320px;
   height:180px;
   border-radius:30px;
-  margin:50px auto;
+  margin:20px auto;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -168,10 +194,17 @@ button:hover {
   display:none;
 }
 
-#nombre-jugador {
-  font-size:2rem;
-  margin-bottom:20px;
-  text-align:center;
+/* ---------- Pantalla Juego ---------- */
+#pantalla-juego {
+  background:#111;
+  width:95%;
+  max-width:700px;
+  padding:30px;
+  border-radius:30px;
+  box-shadow:0 0 30px #ff4d4d;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
 .nombres-jugadores {
@@ -188,6 +221,13 @@ button:hover {
   border-radius:15px;
   font-size:1.2rem;
 }
+
+/* ---------- Selector Votación ---------- */
+#selector-voto {
+  display:none;
+  margin-top:15px;
+}
+
 </style>
 </head>
 <body>
@@ -242,6 +282,16 @@ button:hover {
       <label>Pista:</label>
       <div class="toggle" id="toggle-pista" onclick="this.classList.toggle('active')"></div>
     </div>
+    <!-- Nueva categoría -->
+    <div class="config-item">
+      <label>Categoría:</label>
+      <select id="categoria">
+        <option value="famosos">Famosos</option>
+        <option value="objetos">Objetos</option>
+        <option value="lugares">Lugares</option>
+        <option value="situaciones">Situaciones</option>
+      </select>
+    </div>
     <div class="jugadores-container" id="jugadores-container"></div>
     <button onclick="iniciarPartida()">Empezar Partida</button>
   </div>
@@ -259,7 +309,11 @@ button:hover {
 <div id="pantalla-juego" style="display:none;">
   <h1>Juego en acción</h1>
   <div class="nombres-jugadores" id="lista-nombres"></div>
-  <button onclick="alert('Votar funciona aquí')">Votar</button>
+  <button onclick="mostrarVotacion()">Votar</button>
+  <div id="selector-voto">
+    <select id="jugador-votar"></select>
+    <button onclick="aplicarVoto()">Aplicar</button>
+  </div>
   <button onclick="reiniciarJuego()">Nueva partida</button>
 </div>
 
@@ -271,17 +325,33 @@ let pistasActiva=false;
 let palabraActual='';
 let pistaActual='';
 
-const palabrasConPista=[
-  {palabra:'Asado', pista:'Domingos'},
-  {palabra:'Mate', pista:'Marihuana'},
-  {palabra:'Banderita', pista:'Fútbol'},
-  {palabra:'Fútbol', pista:'Pelota'},
-  {palabra:'Dulce de leche', pista:'Postre'},
-  {palabra:'Empanada', pista:'Relleno'},
-  {palabra:'Choripán', pista:'Finde'},
-  {palabra:'Medialuna', pista:'Café'},
-  {palabra:'Dulce', pista:'Caramelo'}
-];
+// Palabras por categoría
+const palabrasPorCategoria={
+  famosos: ['Tinelli','Enzo Fernández','Guido Casca','Julián Álvarez'],
+  objetos: ['Mate','Tele','Ventilador','Aire','Celular'],
+  lugares: ['Playa','Laguna','Montaña','Ciudad'],
+  situaciones: ['Pescando','Fiesta','Picnic','Partido']
+};
+
+const pistasPorPalabra={
+  'Tinelli':'Show',
+  'Enzo Fernández':'Fútbol',
+  'Guido Casca':'Famoso',
+  'Julián Álvarez':'Goleador',
+  'Mate':'Marihuana',
+  'Tele':'Pantalla',
+  'Ventilador':'Verano',
+  'Aire':'Fresco',
+  'Celular':'Mensajes',
+  'Playa':'Arena',
+  'Laguna':'Pescando',
+  'Montaña':'Altura',
+  'Ciudad':'Tráfico',
+  'Pescando':'Río',
+  'Fiesta':'Música',
+  'Picnic':'Canasta',
+  'Partido':'Pelota'
+};
 
 function mostrarConfiguracion(){
   document.getElementById('pantalla-inicio').style.display='none';
@@ -306,6 +376,7 @@ function iniciarPartida(){
   const numJugadores=parseInt(document.getElementById('num-jugadores').value);
   const numImpostores=parseInt(document.getElementById('num-impostores').value);
   pistasActiva=document.getElementById('toggle-pista').classList.contains('active');
+  const categoria=document.getElementById('categoria').value;
 
   jugadores=[];
   roles=[];
@@ -317,10 +388,10 @@ function iniciarPartida(){
   roles=Array(numImpostores).fill('Impostor').concat(Array(numJugadores-numImpostores).fill('Ciudadano'));
   roles.sort(()=>Math.random()-0.5);
 
-  // Seleccionar palabra y pista
-  const aleatoria=palabrasConPista[Math.floor(Math.random()*palabrasConPista.length)];
-  palabraActual=aleatoria.palabra;
-  pistaActual=aleatoria.pista;
+  // Seleccionar palabra aleatoria según categoría
+  const palabras=palabrasPorCategoria[categoria];
+  palabraActual=palabras[Math.floor(Math.random()*palabras.length)];
+  pistaActual=pistasPorPalabra[palabraActual] || 'Pista';
 
   document.getElementById('pantalla-configuracion').style.display='none';
   document.getElementById('pantalla-revelado').style.display='block';
@@ -369,10 +440,30 @@ function mostrarPantallaJuego(){
   });
 }
 
+// Votación funcional
+function mostrarVotacion(){
+  const selectorDiv=document.getElementById('selector-voto');
+  const select=document.getElementById('jugador-votar');
+  select.innerHTML='';
+  jugadores.forEach((nombre,i)=>{
+    const option=document.createElement('option');
+    option.value=i;
+    option.textContent=nombre;
+    select.appendChild(option);
+  });
+  selectorDiv.style.display='block';
+}
+
+function aplicarVoto(){
+  const idx=parseInt(document.getElementById('jugador-votar').value);
+  const rol=roles[idx];
+  alert(rol==='Impostor' ? '¡Felicitaciones! Capturaron al impostor' : 'Te equivocaste, no era el impostor');
+  document.getElementById('selector-voto').style.display='none';
+}
+
 function reiniciarJuego(){
   location.reload();
 }
 </script>
-
 </body>
   </html>
