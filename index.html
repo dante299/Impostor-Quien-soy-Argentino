@@ -4,185 +4,190 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>El Impostor Argentino</title>
-<!-- Tipografía moderna y estética -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<!-- Tipografía estética -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  /* Estilos generales */
   body {
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin:0;
+    font-family:'Montserrat', sans-serif;
+    background:#000;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
   }
 
   h1 {
-    margin-top: 40px;
-    font-size: 3rem;
-    text-align: center;
+    text-align:center;
+    font-size:3rem;
+    margin-top:40px;
   }
 
-  /* Cuadros grandes y estéticos */
   .cuadro {
-    width: 280px;
-    height: 160px;
-    border-radius: 30px;
-    margin: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    background: linear-gradient(135deg, #ff4d4d, #cc0000);
-    color: #000;
-    box-shadow: 0 0 20px #ff4d4d;
-    transition: transform 0.2s, box-shadow 0.2s;
+    width:280px;
+    height:160px;
+    border-radius:30px;
+    margin:30px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    font-size:2rem;
+    font-weight:bold;
+    text-align:center;
+    background:linear-gradient(135deg,#ff4d4d,#cc0000);
+    color:#000;
+    box-shadow:0 0 20px #ff4d4d;
+    transition:transform 0.2s,box-shadow 0.2s;
   }
 
   .cuadro:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px #ff1a1a;
+    transform:scale(1.05);
+    box-shadow:0 0 30px #ff1a1a;
   }
 
-  /* Configuración */
   .configuracion {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top:30px;
   }
 
   .config-item {
-    margin: 15px 0;
-    display: flex;
-    align-items: center;
-    font-size: 1.4rem;
+    margin:15px 0;
+    display:flex;
+    align-items:center;
+    font-size:1.4rem;
+    background:#222;
+    padding:10px 20px;
+    border-radius:15px;
   }
 
-  select, input.jugador-input {
-    padding: 10px;
-    font-size: 1.2rem;
-    border-radius: 10px;
-    border: none;
-    margin-left: 10px;
-    text-align: center;
+  .config-item label {
+    margin-right:10px;
+  }
+
+  select,input.jugador-input {
+    padding:10px;
+    font-size:1.2rem;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+    margin-left:10px;
   }
 
   .toggle {
-    width: 60px;
-    height: 30px;
-    background: #555;
-    border-radius: 30px;
-    position: relative;
-    cursor: pointer;
-    margin-left: 10px;
+    width:60px;
+    height:30px;
+    background:#555;
+    border-radius:30px;
+    position:relative;
+    cursor:pointer;
+    margin-left:10px;
   }
 
   .toggle::before {
-    content: '';
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    background: #ff4d4d;
-    border-radius: 50%;
-    top: 1px;
-    left: 1px;
-    transition: left 0.2s;
+    content:'';
+    position:absolute;
+    width:28px;
+    height:28px;
+    background:#ff4d4d;
+    border-radius:50%;
+    top:1px;
+    left:1px;
+    transition:left 0.2s;
   }
 
   .toggle.active::before {
-    left: 31px;
+    left:31px;
   }
 
   button {
-    margin-top: 20px;
-    padding: 15px 25px;
-    font-size: 1.5rem;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    background-color: #ff4d4d;
-    color: #000;
-    font-weight: bold;
-    box-shadow: 0 0 15px #ff4d4d;
-    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top:20px;
+    padding:15px 25px;
+    font-size:1.5rem;
+    border-radius:20px;
+    border:none;
+    cursor:pointer;
+    background-color:#ff4d4d;
+    color:#000;
+    font-weight:bold;
+    box-shadow:0 0 15px #ff4d4d;
+    transition:transform 0.2s,box-shadow 0.2s;
   }
 
   button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px #ff1a1a;
+    transform:scale(1.05);
+    box-shadow:0 0 25px #ff1a1a;
   }
 
   .jugadores-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:20px;
   }
 
   .jugador-input {
-    width: 150px;
-    margin: 5px;
+    width:150px;
+    margin:5px;
   }
 
   /* Revelado */
   .revelar-cuadro {
-    width: 320px;
-    height: 180px;
-    border-radius: 30px;
-    margin: 50px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #cc0000;
-    color: #000;
-    font-size: 2.2rem;
-    cursor: pointer;
-    box-shadow: 0 0 20px #ff4d4d;
-    text-align: center;
+    width:320px;
+    height:180px;
+    border-radius:30px;
+    margin:50px auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:#cc0000;
+    color:#000;
+    font-size:2rem;
+    cursor:pointer;
+    box-shadow:0 0 20px #ff4d4d;
+    text-align:center;
+    flex-direction:column;
   }
 
-  #boton-siguiente {
-    margin-top: 20px;
-    display: none;
+  #boton-siguiente,#boton-empezar-juego {
+    margin-top:20px;
+    display:none;
+  }
+
+  #nombre-jugador {
+    font-size:2rem;
+    margin-bottom:20px;
+    text-align:center;
   }
 
   .nombres-jugadores {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 20px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:20px;
   }
 
   .nombre-jugador {
-    margin: 5px 10px;
-    padding: 8px 15px;
-    background-color: #555;
-    border-radius: 15px;
-    font-size: 1.2rem;
-  }
-
-  .cronometro {
-    font-size: 2rem;
-    margin-top: 20px;
-    color: #ff4d4d;
+    margin:5px 10px;
+    padding:8px 15px;
+    background-color:#555;
+    border-radius:15px;
+    font-size:1.2rem;
   }
 </style>
 </head>
 <body>
 
-<!-- Pantalla principal -->
+<!-- Pantalla Inicio -->
 <div id="pantalla-inicio">
   <h1>Juegos Argentinos</h1>
   <div class="cuadro" onclick="mostrarConfiguracion()">El Impostor</div>
   <div class="cuadro" onclick="alert('Quién Soy todavía no implementado')">¿Quién Soy?</div>
 </div>
 
-<!-- Configuración -->
+<!-- Configuración Impostor -->
 <div id="pantalla-configuracion" style="display:none;">
   <h1>Configuración - El Impostor</h1>
   <div class="configuracion">
@@ -226,24 +231,33 @@
       <div class="toggle" id="toggle-pista" onclick="this.classList.toggle('active')"></div>
     </div>
     <div class="jugadores-container" id="jugadores-container"></div>
-    <button onclick="iniciarPartida()">Nuevo Juego</button>
+    <button onclick="iniciarPartida()">Empezar Partida</button>
   </div>
 </div>
 
 <!-- Revelado -->
 <div id="pantalla-revelado" style="display:none;">
-  <h1>Revelar palabra</h1>
-  <div class="revelar-cuadro" onclick="revelarJugador()">Tocar para revelar</div>
+  <h1 id="nombre-jugador"></h1>
+  <div class="revelar-cuadro" onclick="revelarJugador()">Revelar</div>
   <button id="boton-siguiente" onclick="siguienteJugador()">Siguiente jugador</button>
+  <button id="boton-empezar-juego" onclick="mostrarPantallaJuego()">Empezar juego</button>
+</div>
+
+<!-- Pantalla Juego -->
+<div id="pantalla-juego" style="display:none;">
+  <h1>Juego en acción</h1>
+  <div class="nombres-jugadores" id="lista-nombres"></div>
+  <button onclick="alert('Votar funciona aquí')">Votar</button>
+  <button onclick="reiniciarJuego()">Nueva partida</button>
 </div>
 
 <script>
-let jugadores = [];
-let roles = [];
-let palabras = ['Asado','Mate','Banderita','Fútbol','Dulce de leche','Empanada','Choripán','Dulce','Medialuna'];
-let turno = 0;
-let pistasActiva = false;
-let tiempoDebate = 0;
+let jugadores=[];
+let roles=[];
+let palabras=['Asado','Mate','Banderita','Fútbol','Dulce de leche','Empanada','Choripán','Medialuna'];
+let turno=0;
+let pistasActiva=false;
+let palabraActual='';
 
 function mostrarConfiguracion(){
   document.getElementById('pantalla-inicio').style.display='none';
@@ -267,7 +281,6 @@ function crearInputsJugadores(){
 function iniciarPartida(){
   const numJugadores=parseInt(document.getElementById('num-jugadores').value);
   const numImpostores=parseInt(document.getElementById('num-impostores').value);
-  tiempoDebate=parseInt(document.getElementById('tiempo-debate').value);
   pistasActiva=document.getElementById('toggle-pista').classList.contains('active');
 
   jugadores=[];
@@ -280,37 +293,59 @@ function iniciarPartida(){
   roles=Array(numImpostores).fill('Impostor').concat(Array(numJugadores-numImpostores).fill('Ciudadano'));
   roles.sort(()=>Math.random()-0.5);
 
+  // Seleccionar palabra única
+  palabraActual=palabras[Math.floor(Math.random()*palabras.length)];
+
   document.getElementById('pantalla-configuracion').style.display='none';
   document.getElementById('pantalla-revelado').style.display='block';
   turno=0;
-  document.querySelector('.revelar-cuadro').textContent='Tocar para revelar';
+  mostrarTurno();
+}
+
+function mostrarTurno(){
+  document.getElementById('nombre-jugador').textContent=jugadores[turno];
+  const cuadro=document.querySelector('.revelar-cuadro');
+  cuadro.textContent='Revelar';
   document.getElementById('boton-siguiente').style.display='none';
+  document.getElementById('boton-empezar-juego').style.display='none';
 }
 
 function revelarJugador(){
-  if(turno>=jugadores.length) return;
   const cuadro=document.querySelector('.revelar-cuadro');
   if(roles[turno]==='Ciudadano'){
-    cuadro.textContent=palabras[Math.floor(Math.random()*palabras.length)];
+    cuadro.textContent=palabraActual;
   } else {
-    cuadro.textContent='Impostor\nPista: '+palabras[Math.floor(Math.random()*palabras.length)].slice(0,3)+'...';
+    cuadro.innerHTML='<span style="color:red; font-weight:bold;">¡IMPOSTOR!</span><br><span style="font-size:1.2rem;">('+palabraActual.slice(0,3)+'...)</span>';
   }
-  document.getElementById('boton-siguiente').style.display='block';
+  // mostrar siguiente jugador o empezar juego
+  if(turno<jugadores.length-1){
+    document.getElementById('boton-siguiente').style.display='block';
+  } else {
+    document.getElementById('boton-empezar-juego').style.display='block';
+  }
 }
 
 function siguienteJugador(){
   turno++;
-  if(turno>=jugadores.length){
-    alert('Último jugador revelado. Empieza la partida.');
-    document.getElementById('pantalla-revelado').style.display='none';
-    // Aquí se puede iniciar la pantalla del juego con cronómetro
-    return;
-  }
-  const cuadro=document.querySelector('.revelar-cuadro');
-  cuadro.textContent='Tocar para revelar';
-  document.getElementById('boton-siguiente').style.display='none';
+  mostrarTurno();
+}
+
+function mostrarPantallaJuego(){
+  document.getElementById('pantalla-revelado').style.display='none';
+  document.getElementById('pantalla-juego').style.display='block';
+  const lista=document.getElementById('lista-nombres');
+  lista.innerHTML='';
+  jugadores.forEach(nombre=>{
+    const div=document.createElement('div');
+    div.className='nombre-jugador';
+    div.textContent=nombre;
+    lista.appendChild(div);
+  });
+}
+
+function reiniciarJuego(){
+  location.reload();
 }
 </script>
-
 </body>
 </html>
