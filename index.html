@@ -149,6 +149,12 @@ button:hover {
 .jugador-input {
   width:150px;
   margin:5px;
+  text-align:center;
+}
+
+/* Centrar botón empezar partida */
+#boton-iniciar {
+  align-self:center;
 }
 
 /* ---------- Revelado ---------- */
@@ -220,14 +226,18 @@ button:hover {
   background-color:#555;
   border-radius:15px;
   font-size:1.2rem;
+  display:flex;
+  align-items:center;
+}
+
+.radio-voto {
+  margin-left:8px;
 }
 
 /* ---------- Selector Votación ---------- */
 #selector-voto {
-  display:none;
   margin-top:15px;
 }
-
 </style>
 </head>
 <body>
@@ -282,7 +292,6 @@ button:hover {
       <label>Pista:</label>
       <div class="toggle" id="toggle-pista" onclick="this.classList.toggle('active')"></div>
     </div>
-    <!-- Nueva categoría -->
     <div class="config-item">
       <label>Categoría:</label>
       <select id="categoria">
@@ -293,7 +302,7 @@ button:hover {
       </select>
     </div>
     <div class="jugadores-container" id="jugadores-container"></div>
-    <button onclick="iniciarPartida()">Empezar Partida</button>
+    <button id="boton-iniciar" onclick="iniciarPartida()">Empezar Partida</button>
   </div>
 </div>
 
@@ -310,10 +319,7 @@ button:hover {
   <h1>Juego en acción</h1>
   <div class="nombres-jugadores" id="lista-nombres"></div>
   <button onclick="mostrarVotacion()">Votar</button>
-  <div id="selector-voto">
-    <select id="jugador-votar"></select>
-    <button onclick="aplicarVoto()">Aplicar</button>
-  </div>
+  <div id="selector-voto"></div>
   <button onclick="reiniciarJuego()">Nueva partida</button>
 </div>
 
@@ -432,7 +438,7 @@ function mostrarPantallaJuego(){
   document.getElementById('pantalla-juego').style.display='block';
   const lista=document.getElementById('lista-nombres');
   lista.innerHTML='';
-  jugadores.forEach(nombre=>{
+  jugadores.forEach((nombre,i)=>{
     const div=document.createElement('div');
     div.className='nombre-jugador';
     div.textContent=nombre;
@@ -440,25 +446,34 @@ function mostrarPantallaJuego(){
   });
 }
 
-// Votación funcional
+// Votación visual
 function mostrarVotacion(){
   const selectorDiv=document.getElementById('selector-voto');
-  const select=document.getElementById('jugador-votar');
-  select.innerHTML='';
+  selectorDiv.innerHTML='';
   jugadores.forEach((nombre,i)=>{
-    const option=document.createElement('option');
-    option.value=i;
-    option.textContent=nombre;
-    select.appendChild(option);
+    const label=document.createElement('label');
+    label.style.margin='5px';
+    label.style.cursor='pointer';
+    label.innerHTML=`<input type="radio" name="voto" value="${i}" class="radio-voto"> ${nombre}`;
+    selectorDiv.appendChild(label);
   });
-  selectorDiv.style.display='block';
+  const boton=document.createElement('button');
+  boton.textContent='Aplicar';
+  boton.onclick=aplicarVoto;
+  selectorDiv.appendChild(boton);
 }
 
 function aplicarVoto(){
-  const idx=parseInt(document.getElementById('jugador-votar').value);
+  const radios=document.querySelectorAll('input[name="voto"]');
+  let idx=-1;
+  radios.forEach(r=>{
+    if(r.checked) idx=parseInt(r.value);
+  });
+  if(idx===-1) return alert('Seleccioná un jugador');
+
   const rol=roles[idx];
   alert(rol==='Impostor' ? '¡Felicitaciones! Capturaron al impostor' : 'Te equivocaste, no era el impostor');
-  document.getElementById('selector-voto').style.display='none';
+  document.getElementById('selector-voto').innerHTML='';
 }
 
 function reiniciarJuego(){
